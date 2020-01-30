@@ -2,8 +2,10 @@ package model
 {
     import view.FieldView;
     import view.PlayerView;
+    import flash.events.EventDispatcher;
+    import flash.events.Event;
 
-    public class Player
+    public class Player extends EventDispatcher
     {
         public function Player(id:int)
         {
@@ -45,6 +47,19 @@ package model
         public var currentItem:Tool = null;
         public var currentCommand:int = 0;
         public var actionDisable:Boolean = false;
+
+        private var _score:int;
+        
+        public function get score():int
+        {
+            return _score;
+        }
+        
+        public function set score(value:int):void
+        {
+            _score = value;
+            this.dispatchEvent(new Event(Event.CHANGE));
+        }
         /* private var _currentCommand:int;
         
         public function get currentCommand():int

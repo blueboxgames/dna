@@ -9,13 +9,14 @@ package view
     import model.Tool;
     import utils.CoreUtils;
     import flash.utils.setTimeout;
+    import model.Repairable;
 
     public class FieldView extends Sprite
     {
         public const PLAYER1_START_X:int = 0;
         public const PLAYER1_START_Y:int = 0;
-        public const PLAYER2_START_X:int = 0;
-        public const PLAYER2_START_Y:int = 0;
+        public const PLAYER2_START_X:int = 600;
+        public const PLAYER2_START_Y:int = 600;
 
         private var player1:Player;
         private var player2:Player;
@@ -37,15 +38,20 @@ package view
             this.player1.x = PLAYER1_START_X;
             this.player1.y = PLAYER1_START_Y;
             this.player1.fieldView = this;
+            player1.addEventListener(Event.CHANGE, playerChange_eventHandler);
             this.player2 = new Player(1);
             this.player2.x = PLAYER2_START_X;
             this.player2.y = PLAYER2_START_Y;
             this.player2.fieldView = this;
+            player2.addEventListener(Event.CHANGE, playerChange_eventHandler);
 
             this.addChild(this.player1.v);
             this.addChild(this.player2.v);
 
-            var tool1:Tool = new Tool(10, 10, 0);
+            var repairable1:Repairable = new Repairable(450, 100, Repairable.TYPE_TV, 1, Repairable.REPAIR_STATE_NONE);
+            this.objects.push(repairable1);
+            this.addChild(repairable1.v);
+            var tool1:Tool = new Tool(100, 450, 0, 0);
             this.tools.push(tool1);
             this.addChild(tool1.v);
         }
@@ -54,9 +60,6 @@ package view
         {
             if( player.currentItem != null )
                 return;
-            
-
-            
         }
 
         public function addTool(repairs:int):void
@@ -127,6 +130,12 @@ package view
                 player2.execute(Command.COMMAND_ACTION);
         }
 
+        private function playerChange_eventHandler(e:Event):void
+        {
+            var p:Player = e.currentTarget as Player;
+            trace(p.score);
+        }
+
         private function step():void
         {
         }
@@ -158,13 +167,39 @@ package view
         {
             if( player.currentItem == null )
                 return;
-            player.currentItem.x = player.x;
-            player.currentItem.y = player.y;
-            this.tools.push(player.currentItem);
-            this.addChild(player.currentItem.v);
-            player.actionDisable = true;
-            setTimeout(enableAPlayer, 1000, player);
-            player.currentItem = null;
+
+            // Check if near repairable
+            var rep:Repairable = null;
+            var minDist:Number = Number.MAX_VALUE;
+            for each(var repairable:Repairable in this.objects)
+            {
+                var dist:Number = CoreUtils.getDistance(player.x, repairable.x ,player.y, repairable.y);
+                if( dist < minDist )
+                {
+                    minDist = dist;
+                    rep = repairable;
+                }
+            }
+            if( player.maxPickRadius < minDist || rep == null )
+            {
+                player.currentItem.x = player.x;
+                player.currentItem.y = player.y;
+                this.tools.push(player.currentItem);
+                this.addChild(player.currentItem.v);
+                player.actionDisable = true;
+                setTimeout(enableAPlayer, 1000, player);
+                player.currentItem = null;
+            }
+            else
+            {
+                if( rep.repair(player.currentItem) )
+                {
+                    trace("SCOREEE!");
+                    player.currentItem = null;
+                    if( rep.repaired )
+                        player.score++;
+                }
+            }
         }
 
         private function enableAPlayer(player:Player):void

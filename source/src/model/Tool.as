@@ -9,12 +9,14 @@ package model
         public var radiusX:int = 5;
         public var radiusY:int = 5;
         public var v:ToolView;
-        public function Tool(x:int, y:int, repairs:int)
+        public var state:int;
+        public function Tool(x:int, y:int, type:int, repairs:int)
         {
             this.v = new ToolView();
             this.x = x;
             this.y = y;
             this.repairs = repairs;
+            this.state = type;
         }
 
         private var _x:int;
@@ -41,16 +43,6 @@ package model
         {
             _y = value;
             this.v.y = _y;
-        }
-
-        public function repair(repairable:Repairable):Boolean
-        {
-            if( this.repairs == 0 || this.repairs == repairable.id )
-            {
-                repairable.repaired = true;
-                return true;
-            }
-            return false;
         }
     }
 }

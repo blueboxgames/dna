@@ -14,8 +14,10 @@
             <aspectRatio>landscape</aspectRatio>
             <depthAndStencil>true</depthAndStencil>
             <systemChrome>standard</systemChrome>
-            <resizable>false</resizable>
+            <resizable>true</resizable>
             <title>DNA</title>
+            <width> 1200 </width>
+            <height> 1200 </height>
             <visible>true</visible>
         </initialWindow>
     <supportedProfiles>extendedDesktop</supportedProfiles>
