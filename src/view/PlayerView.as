@@ -20,9 +20,9 @@ package view
             return status;
         }
 
-        public function PlayerView()
+        public function PlayerView(color:uint)
         {
-            this.graphics.beginFill(0xff0000, 1);
+            this.graphics.beginFill(color, 1);
             this.graphics.drawRect(0,0,100,100);
             this.graphics.endFill();
             this.addEventListener(Event.ENTER_FRAME, enterFrame_eventHandler);
