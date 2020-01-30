@@ -7,6 +7,8 @@ package view
     import flash.events.Event;
     import model.Player;
     import model.Tool;
+    import utils.CoreUtils;
+    import flash.utils.setTimeout;
 
     public class FieldView extends Sprite
     {
@@ -44,13 +46,17 @@ package view
             this.addChild(this.player2.v);
 
             var tool1:Tool = new Tool(10, 10, 0);
+            this.tools.push(tool1);
             this.addChild(tool1.v);
         }
 
-        public function iPick(player:Player):void
+        public function playerPickCallback(player:Player):void
         {
             if( player.currentItem != null )
                 return;
+            
+
+            
         }
 
         public function addTool(repairs:int):void
@@ -83,7 +89,7 @@ package view
                 player1.unexecute(Command.COMMAND_LEFT);
             else if( e.keyCode == Keyboard.RIGHT )
                 player1.unexecute(Command.COMMAND_RIGHT);
-            else if( e.keyCode == Keyboard.NUMPAD_ENTER)
+            else if( e.keyCode == 13)
                 player1.unexecute(Command.COMMAND_ACTION)
             else if( e.keyCode == Keyboard.W )
                 player2.unexecute(Command.COMMAND_UP);
@@ -107,7 +113,7 @@ package view
                 player1.execute(Command.COMMAND_LEFT);
             else if( e.keyCode == Keyboard.RIGHT )
                 player1.execute(Command.COMMAND_RIGHT);
-            else if( e.keyCode == Keyboard.NUMPAD_ENTER)
+            else if( e.keyCode == 13 )
                 player1.execute(Command.COMMAND_ACTION)
             else if( e.keyCode == Keyboard.W )
                 player2.execute(Command.COMMAND_UP);
@@ -125,8 +131,50 @@ package view
         {
         }
 
+        private function pItemPick(player:Player):void
+        {
+            var toolr:Tool = null;
+            var minDist:Number = Number.MAX_VALUE;
+            for each(var tool:Tool in tools)
+            {
+                var dist:Number = CoreUtils.getDistance(player.x, tool.x ,player.y, tool.y);
+                if( dist < minDist )
+                {
+                    minDist = dist;
+                    toolr = tool;
+                }
+            }
+            if( player.maxPickRadius < minDist || toolr == null )
+                return;
+            
+            player.actionDisable = true;
+            setTimeout(enableAPlayer, 1000, player);
+            tools.removeAt(tools.indexOf(toolr));
+            player.currentItem = toolr;
+            this.removeChild(toolr.v);
+        }
+
+        private function pItemDrop(player:Player):void
+        {
+            if( player.currentItem == null )
+                return;
+            player.currentItem.x = player.x;
+            player.currentItem.y = player.y;
+            this.tools.push(player.currentItem);
+            this.addChild(player.currentItem.v);
+            player.actionDisable = true;
+            setTimeout(enableAPlayer, 1000, player);
+            player.currentItem = null;
+        }
+
+        private function enableAPlayer(player:Player):void
+        {
+            player.actionDisable = false;
+        }
+
         private function enterFrame_eventHandler(e:Event):void
         {
+            // Movement
             if( (player1.currentCommand & Command.COMMAND_UP) == Command.COMMAND_UP )
                 player1.y -= player1.speedFactor;
             if( (player1.currentCommand & Command.COMMAND_RIGHT ) == Command.COMMAND_RIGHT )
@@ -135,6 +183,37 @@ package view
                 player1.y += player1.speedFactor;
             if( (player1.currentCommand & Command.COMMAND_LEFT ) == Command.COMMAND_LEFT )
                 player1.x -= player1.speedFactor;
+            if( (player2.currentCommand & Command.COMMAND_UP) == Command.COMMAND_UP )
+                player2.y -= player2.speedFactor;
+            if( (player2.currentCommand & Command.COMMAND_RIGHT ) == Command.COMMAND_RIGHT )
+                player2.x += player2.speedFactor;
+            if( (player2.currentCommand & Command.COMMAND_DOWN ) == Command.COMMAND_DOWN )
+                player2.y += player2.speedFactor;
+            if( (player2.currentCommand & Command.COMMAND_LEFT ) == Command.COMMAND_LEFT )
+                player2.x -= player2.speedFactor;
+
+            // Action
+            if( !player1.actionDisable )
+            {
+                if( (player1.currentCommand & Command.COMMAND_ACTION) == Command.COMMAND_ACTION )
+                {
+                    if( player1.currentItem == null )
+                        this.pItemPick(player1);
+                    else
+                        this.pItemDrop(player1);
+                }
+            }
+
+            if( !player2.actionDisable )
+            {
+                if( (player2.currentCommand & Command.COMMAND_ACTION) == Command.COMMAND_ACTION )
+                {
+                    if( player2.currentItem == null )
+                        this.pItemPick(player2);
+                    else
+                        this.pItemDrop(player2);
+                }
+            }
         }
     }
 }

@@ -37,12 +37,26 @@ package model
         }
         public var radiusX:int = 10;
         public var radiusY:int = 10;
+        public var maxPickRadius:Number = 20;
         public var v:PlayerView;
         public var fieldView:FieldView;
 
         public var speedFactor:int = 1;
         public var currentItem:Tool = null;
         public var currentCommand:int = 0;
+        public var actionDisable:Boolean = false;
+        /* private var _currentCommand:int;
+        
+        public function get currentCommand():int
+        {
+            return _currentCommand;
+        }
+        
+        public function set currentCommand(value:int):void
+        {
+            trace(_currentCommand);
+            _currentCommand = value;
+        } */
         
         /**
          * sets a command flag.
