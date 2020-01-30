@@ -1,7 +1,7 @@
 ﻿package {
 	import flash.display.MovieClip;
 
-	public class CharacterBlue extends MovieClip {
+	public class Character extends MovieClip {
 		public static var STATE_NAME_IDLE: String = "idle";
 		public static var STATE_NAME_WALK: String = "walk";
 		public static var STATE_NAME_CARRY: String = "carry";
@@ -12,7 +12,7 @@
 		
 		public static var EVENT_END_HIT: String = "eventEndHit";
 
-		public function CharacterBlue() {
+		public function Character() {
 			// constructor code
 		}
 	}
