@@ -8,6 +8,8 @@ package
     import model.Tool;
     import model.Repairable;
     import view.Scene;
+    import flash.display.StageScaleMode;
+    import flash.display.StageAlign;
     import flash.events.Event;
 
     public class Main extends Sprite
@@ -18,6 +20,8 @@ package
 
         public function Main()
         {
+            this.stage.scaleMode = StageScaleMode.NO_SCALE;
+            this.stage.align = StageAlign.TOP_LEFT;
             this.loaderInfo.addEventListener(Event.COMPLETE, this.loaderInfo_completeHandler)
 
             this.stage.addEventListener(KeyboardEvent.KEY_UP, keyup_eventHandler);
