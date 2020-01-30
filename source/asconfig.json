@@ -2,6 +2,7 @@
     "type": "app",
     "config": "air",
     "compilerOptions": {
+        "library-path": ["libs"],
         "optimize": false,
         "default-frame-rate": 24,
         "output": "bin/dna.swf"
