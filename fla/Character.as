@@ -11,6 +11,7 @@
 		public static var STATE_NAME_IDLE_CARRY: String = "idle_carry";
 		
 		public static var EVENT_END_HIT: String = "eventEndHit";
+		public static var EVENT_END_DIE: String = "eventEndDie";
 
 		public function Character() {
 			// constructor code

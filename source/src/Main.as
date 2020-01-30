@@ -10,8 +10,6 @@ package
 
         public function Main()
         {
-            this.stage.stageWidth = 1200;
-            this.stage.stageHeight = 1200;
             this.field = new FieldView();
             this.field.addRepairable(50, 50);
             this.field.addRepairable(100, 100);
