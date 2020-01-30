@@ -18,7 +18,7 @@ package view
     static public const BORDER:int = 20; 
     static public const PADDING:int = 10; 
     static public const CAMERA_WIDTH:int = 400; 
-    static public const CAMERA_HEIGHT:int = 600; 
+    static public const CAMERA_HEIGHT:int = 600;
 
     private var dt:int;
     private var accumulator:int;
@@ -44,6 +44,13 @@ package view
       this.engine.colleagues.push(topWall);
       var bottomWall:Wall= new Wall(WIDTH * 0.5, HEIGHT + BORDER * 0.5 - PADDING, WIDTH + BORDER * 2, BORDER, this);
       this.engine.colleagues.push(bottomWall);
+
+      var len:int = 4;
+      for(var i:int = 0; i < len; i++)
+      {
+        // this.engine.colleagues.push(new Wall(Math.random()*(WIDTH - 100), Math.random()*(HEIGHT - 100), Math.random() * WIDTH*0.5, Math.random()*HEIGHT*0.5, this));
+        // this.engine.colleagues.push(new Unit(Math.random()*(WIDTH - 100), Math.random()*(HEIGHT - 100), Math.random() * 8, this));
+      }
 
       this.addEventListener(Event.ENTER_FRAME, this.enterFrameHandler);
 	  	this.stage.addEventListener(MouseEvent.CLICK, this.stage_clickHandler);

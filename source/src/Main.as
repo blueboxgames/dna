@@ -1,94 +1,73 @@
 package
 {
-    import flash.display.Sprite;
-    import flash.events.KeyboardEvent;
-    import flash.ui.Keyboard;
-    import model.Command;
-    import view.PlayerView;
-    import model.Tool;
-    import model.Repairable;
-    import view.Scene;
-    import flash.display.StageScaleMode;
-    import flash.display.StageAlign;
-    import flash.events.Event;
+import control.InputController;
 
-    public class Main extends Sprite
+import flash.display.Sprite;
+import flash.display.StageAlign;
+import flash.display.StageScaleMode;
+import flash.events.Event;
+
+import utils.IState;
+import utils.MyEvent;
+
+import view.PlayerView;
+import view.Scene;
+import view.Menu;
+
+public class Main extends Sprite
+{
+    public var scene:Scene;
+    public var player1:PlayerView;
+    public var player2:PlayerView;
+
+    public function Main()
     {
-        public var scene:Scene;
-        public var player1:PlayerView;
-        public var player2:PlayerView;
+        this.stage.scaleMode = StageScaleMode.NO_SCALE;
+        this.stage.align = StageAlign.TOP_LEFT;
+        this.loaderInfo.addEventListener(Event.COMPLETE, this.loaderInfo_completeHandler);
+    }
+    protected function loaderInfo_completeHandler(e:Event):void
+    {
+        this.scene = new Scene();
+        this.addChild(scene);
 
-        public function Main()
-        {
-            this.stage.scaleMode = StageScaleMode.NO_SCALE;
-            this.stage.align = StageAlign.TOP_LEFT;
-            this.loaderInfo.addEventListener(Event.COMPLETE, this.loaderInfo_completeHandler)
+    this.changeStateTo(Menu);
+    this._inputControl = new InputController();
+    this.addEventListener(Event.ENTER_FRAME, enterFrame_eventHandler);
+    }
 
-            this.stage.addEventListener(KeyboardEvent.KEY_UP, keyup_eventHandler);
-            this.stage.addEventListener(KeyboardEvent.KEY_DOWN, keydown_eventHandler);
-            this.player1 = new PlayerView(0xff0000);
-            this.player1.x = 200;
-            this.player1.y = 200;
-            this.stage.addChild(player1);
-            this.player2 = new PlayerView(0x0000ff);
-            this.stage.addChild(player2);
+    
+    private var _currentState:IState;
 
-            var repairable1:Repairable = new Repairable();
-            var tool1:Tool = new Tool(null, repairable1);
-        }
-        protected function loaderInfo_completeHandler(e:Event):void
-        {
-            this.scene = new Scene();
-            this.addChild(scene);
-        }
+    [Embed(source="font/ARLRDBD.TTF",
+            fontName="Arial Rounded MT Bold",
+            mimeType="application/x-font",
+            advancedAntiAliasing="true",
+            embedAsCFF="false")]
+    private var _arialRoundedFont:Class;
+    private var _inputControl:InputController;
 
-        protected function keyup_eventHandler(e:KeyboardEvent):void
-        {
-            if( e.keyCode == Keyboard.UP )
-                player1.unexecute(Command.COMMAND_UP);
-            else if( e.keyCode == Keyboard.DOWN )
-                player1.unexecute(Command.COMMAND_DOWN);
-            else if( e.keyCode == Keyboard.LEFT )
-                player1.unexecute(Command.COMMAND_LEFT);
-            else if( e.keyCode == Keyboard.RIGHT )
-                player1.unexecute(Command.COMMAND_RIGHT);
-            else if( e.keyCode == Keyboard.NUMPAD_ENTER)
-                player1.unexecute(Command.COMMAND_ACTION)
-            else if( e.keyCode == Keyboard.W )
-                player2.unexecute(Command.COMMAND_UP);
-            else if( e.keyCode == Keyboard.S )
-                player2.unexecute(Command.COMMAND_DOWN);
-            else if( e.keyCode == Keyboard.A )
-                player2.unexecute(Command.COMMAND_LEFT);
-            else if( e.keyCode == Keyboard.D )
-                player2.unexecute(Command.COMMAND_RIGHT);
-            else if( e.keyCode == Keyboard.SPACE )
-                player2.unexecute(Command.COMMAND_ACTION);
-        }
-
-        public function keydown_eventHandler(e:KeyboardEvent):void
-        {
-            if( e.keyCode == Keyboard.UP )
-                player1.execute(Command.COMMAND_UP);
-            else if( e.keyCode == Keyboard.DOWN )
-                player1.execute(Command.COMMAND_DOWN);
-            else if( e.keyCode == Keyboard.LEFT )
-                player1.execute(Command.COMMAND_LEFT);
-            else if( e.keyCode == Keyboard.RIGHT )
-                player1.execute(Command.COMMAND_RIGHT);
-            else if( e.keyCode == Keyboard.NUMPAD_ENTER)
-                player1.unexecute(Command.COMMAND_ACTION)
-            else if( e.keyCode == Keyboard.W )
-                player2.execute(Command.COMMAND_UP);
-            else if( e.keyCode == Keyboard.S )
-                player2.execute(Command.COMMAND_DOWN);
-            else if( e.keyCode == Keyboard.A )
-                player2.execute(Command.COMMAND_LEFT);
-            else if( e.keyCode == Keyboard.D )
-                player2.execute(Command.COMMAND_RIGHT);
-            else if( e.keyCode == Keyboard.SPACE )
-                player2.execute(Command.COMMAND_ACTION);
-
+    private function enterFrame_eventHandler(event:Event):void {
+        // AIRControl.update();
+        if (_currentState) {
+            _currentState.update();
         }
     }
+
+    public function changeStateTo(state:Class):void {
+        if (_currentState) {
+            _currentState.destroy();
+            removeChild(_currentState as Sprite);
+            Sprite(_currentState).removeEventListener(MyEvent.REQUEST_STATE, onRequestState);
+            _currentState = null;
+        }
+        _currentState = new state(_inputControl);
+        Sprite(_currentState).addEventListener(MyEvent.REQUEST_STATE, onRequestState);
+        addChild(_currentState as Sprite);
+    }
+
+    private function onRequestState(event:MyEvent):void {
+        changeStateTo(event.data.state);
+    }
+}
 }
