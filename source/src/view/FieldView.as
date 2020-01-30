@@ -13,13 +13,13 @@ package view
 
     public class FieldView extends Sprite
     {
-        public const PLAYER1_START_X:int = 0;
-        public const PLAYER1_START_Y:int = 0;
-        public const PLAYER2_START_X:int = 600;
-        public const PLAYER2_START_Y:int = 600;
+        public static const PLAYER1_START_X:int = 0;
+        public static const PLAYER1_START_Y:int = 0;
+        public static const PLAYER2_START_X:int = 600;
+        public static const PLAYER2_START_Y:int = 600;
 
-        private var player1:Player;
-        private var player2:Player;
+        public var player1:Player;
+        public var player2:Player;
         private var tools:Array;
         private var objects:Array;
 
@@ -112,7 +112,6 @@ package view
 
         public function keydown_eventHandler(e:KeyboardEvent):void
         {
-            trace(e.keyCode);
             if( e.keyCode == Keyboard.UP )
                 player1.execute(Command.COMMAND_UP);
             else if( e.keyCode == Keyboard.DOWN )
@@ -142,7 +141,6 @@ package view
         private function playerChange_eventHandler(e:Event):void
         {
             var p:Player = e.currentTarget as Player;
-            trace(p.score);
         }
 
         private function step():void
@@ -170,8 +168,8 @@ package view
             tools.removeAt(tools.indexOf(toolr));
             player.currentItem = toolr;
             this.removeChild(toolr.v);
-            player.currentState = CharacterBlue.STATE_NAME_CARRY;
-            player.v.character.gotoAndPlay(CharacterBlue.STATE_NAME_CARRY);
+            player.currentState = Character.STATE_NAME_CARRY;
+            player.v.character.gotoAndPlay(Character.STATE_NAME_CARRY);
         }
 
         private function pItemDrop(player:Player):void
@@ -192,8 +190,8 @@ package view
                 }
             }
 
-            player.currentState = CharacterBlue.STATE_NAME_IDLE;
-            player.v.character.gotoAndPlay(CharacterBlue.STATE_NAME_IDLE);
+            player.currentState = Character.STATE_NAME_IDLE;
+            player.v.character.gotoAndPlay(Character.STATE_NAME_IDLE);
             if( player.maxPickRadius < minDist || rep == null )
             {
                 player.currentItem.x = player.x;
@@ -208,7 +206,6 @@ package view
             {
                 if( rep.repair(player.currentItem) )
                 {
-                    trace("SCOREEE!");
                     player.currentItem = null;
                     if( rep.repaired )
                         player.score++;
@@ -267,13 +264,19 @@ package view
             // Hit
             if( (player1.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT )
             {
-                player1.currentState = CharacterBlue.STATE_NAME_PUNCH;
-                player1.hit(player2);
+                if( CoreUtils.getDistance(player1.x, player2.x, player2.y, player1.y) < player1.maxHitRadius )
+                {
+                    player1.v.character.addEventListener(Character.EVENT_END_HIT, player1.hitAttackReEnable);
+                    player1.hit(player2);
+                }
             }
             if( (player2.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT )
             {
-                player2.currentState = CharacterBlue.STATE_NAME_PUNCH;
-                player2.hit(player1);
+                if( CoreUtils.getDistance(player1.x, player2.x, player2.y, player1.y) > player2.maxHitRadius )
+                {
+                    player2.v.character.addEventListener(Character.EVENT_END_HIT, player2.hitAttackReEnable);
+                    player2.hit(player1);
+                }
             }
         }
     }
