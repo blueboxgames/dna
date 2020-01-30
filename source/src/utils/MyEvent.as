@@ -6,6 +6,7 @@ public class MyEvent extends Event {
 
     public static const INPUT_START:String = "inputStart";
     public static const INPUT_END:String = "inputEnd";
+    public static const GAME_OVER:String = "gameOver";
 
     private var _data:Object;
 

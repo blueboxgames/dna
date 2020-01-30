@@ -9,6 +9,8 @@ import model.Repairable;
 import model.Tool;
 
 import utils.CoreUtils;
+import control.HeartGroup;
+import utils.MyEvent;
 
 public class FieldView extends Sprite {
     public static const PLAYER1_START_X:int = 0;
@@ -29,8 +31,22 @@ public class FieldView extends Sprite {
         this.objects = [];
     }
 
+    public var healthGroup:HeartGroup;
+
         public function initialize():void
         {
+            if( this._id == 0 )
+            {
+                this.healthGroup = new HeartGroup(Player.START_HEALTH, true);
+                this.x = 0;
+            }
+            else
+            {
+                this.healthGroup = new HeartGroup(Player.START_HEALTH, false)
+                this.x = 800;
+            }
+            this.addChild(this.healthGroup);
+
             this.player1 = new Player(0);
             this.player1.x = PLAYER1_START_X;
             this.player1.y = PLAYER1_START_Y;
@@ -51,7 +67,6 @@ public class FieldView extends Sprite {
 
             this.addTool(new Tool(100, 100, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
             this.addTool(new Tool(100, 200, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
-            
         }
 
     public function playerPickCallback(player:Player):void {
@@ -82,6 +97,10 @@ public class FieldView extends Sprite {
 
     private function playerChange_eventHandler(e:Event):void {
         var p:Player = e.currentTarget as Player;
+        trace("c");
+        trace(p.score);
+        if( p.score == 1 )
+            this.dispatchEvent(new MyEvent(MyEvent.GAME_OVER, false, {winner: p.id}));
     }
 
     private function step():void {
@@ -149,26 +168,33 @@ public class FieldView extends Sprite {
 
     public function update():void {
         // Movement
-        if ((player1.currentCommand & Command.COMMAND_UP) == Command.COMMAND_UP)
-            player1.y -= player1.speedFactor;
-        if ((player1.currentCommand & Command.COMMAND_RIGHT) == Command.COMMAND_RIGHT)
-            player1.x += player1.speedFactor;
-        if ((player1.currentCommand & Command.COMMAND_DOWN) == Command.COMMAND_DOWN)
-            player1.y += player1.speedFactor;
-        if ((player1.currentCommand & Command.COMMAND_LEFT) == Command.COMMAND_LEFT)
-            player1.x -= player1.speedFactor;
 
-        if ((player2.currentCommand & Command.COMMAND_UP) == Command.COMMAND_UP)
-            player2.y -= player2.speedFactor;
-        if ((player2.currentCommand & Command.COMMAND_RIGHT) == Command.COMMAND_RIGHT)
-            player2.x += player2.speedFactor;
-        if ((player2.currentCommand & Command.COMMAND_DOWN) == Command.COMMAND_DOWN)
-            player2.y += player2.speedFactor;
-        if ((player2.currentCommand & Command.COMMAND_LEFT) == Command.COMMAND_LEFT)
-            player2.x -= player2.speedFactor;
+        if( !player1.disable )
+        {
+            if ((player1.currentCommand & Command.COMMAND_UP) == Command.COMMAND_UP)
+                player1.y -= player1.speedFactor;
+            if ((player1.currentCommand & Command.COMMAND_RIGHT) == Command.COMMAND_RIGHT)
+                player1.x += player1.speedFactor;
+            if ((player1.currentCommand & Command.COMMAND_DOWN) == Command.COMMAND_DOWN)
+                player1.y += player1.speedFactor;
+            if ((player1.currentCommand & Command.COMMAND_LEFT) == Command.COMMAND_LEFT)
+                player1.x -= player1.speedFactor;
+        }
+
+        if( !player2.disable )
+        {
+            if ((player2.currentCommand & Command.COMMAND_UP) == Command.COMMAND_UP)
+                player2.y -= player2.speedFactor;
+            if ((player2.currentCommand & Command.COMMAND_RIGHT) == Command.COMMAND_RIGHT)
+                player2.x += player2.speedFactor;
+            if ((player2.currentCommand & Command.COMMAND_DOWN) == Command.COMMAND_DOWN)
+                player2.y += player2.speedFactor;
+            if ((player2.currentCommand & Command.COMMAND_LEFT) == Command.COMMAND_LEFT)
+                player2.x -= player2.speedFactor;
+        }
 
         // Action
-        if (!player1.actionDisable) {
+        if ( !player1.actionDisable && !player1.disable ) {
             if ((player1.currentCommand & Command.COMMAND_ACTION) == Command.COMMAND_ACTION) {
                 if (player1.currentItem == null)
                     this.pItemPick(player1);
@@ -177,7 +203,7 @@ public class FieldView extends Sprite {
             }
         }
 
-        if (!player2.actionDisable) {
+        if (!player2.actionDisable && !player2.disable ) {
             if ((player2.currentCommand & Command.COMMAND_ACTION) == Command.COMMAND_ACTION) {
                 if (player2.currentItem == null)
                     this.pItemPick(player2);
@@ -187,15 +213,23 @@ public class FieldView extends Sprite {
         }
 
         // Hit
-        if ((player1.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT) {
-            player1.v.character.addEventListener(Character.EVENT_END_HIT, player1.hitAttackReEnable);
-            player1.hit(player2);
+        if( !player1.disable )
+        {
+            if ((player1.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT) {
+                player1.v.character.addEventListener(Character.EVENT_END_HIT, player1.hitAttackReEnable);
+                player1.hit(player2);
+            }
         }
-        if ((player2.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT) {
-            player2.v.character.addEventListener(Character.EVENT_END_HIT, player2.hitAttackReEnable);
-            player2.hit(player1);
+        if( !player2.disable )
+        {
+            if ((player2.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT) {
+                player2.v.character.addEventListener(Character.EVENT_END_HIT, player2.hitAttackReEnable);
+                player2.hit(player1);
+            }
         }
 
+        if( stage == null )
+            return;
         if(_id == 1) {
             this.x = (stage.stageWidth * 1 / 4) - player1.x;
             this.y = (stage.stageHeight / 2) - player1.y;

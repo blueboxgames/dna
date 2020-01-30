@@ -17,7 +17,7 @@ package model
 
         
 
-        private var id:int = 0;
+        public var id:int = 0;
 
         private var _x:int = 0;
         
@@ -55,11 +55,15 @@ package model
         public function set health(value:int):void
         {
             _health = value;
-            trace("HEL" + _health);
+            this.fieldView.healthGroup.decrease();
             if( this.health <= 0 )
+            {
+                this.fieldView.healthGroup.reset();
                 this.die();
+            }
             if( this.health < 0 )
             {
+                this.fieldView.healthGroup.reset();
                 this.endDie()
             }
         }
@@ -144,7 +148,6 @@ package model
         public function set score(value:int):void
         {
             _score = value;
-            trace("SCORE = " + value);
             this.dispatchEvent(new Event(Event.CHANGE));
         }
         /**
