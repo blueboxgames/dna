@@ -62,7 +62,7 @@ package com.grantech.colleagues {
 		}
 		
 		public function integrateVelocity(c : com.grantech.colleagues.Colleague,deltaTime : Number) : void {
-			if(c.invMass == 0 || c.speed == 0) return;
+			if(c.invMass == 0) return;
 			c.x += c.speedX * deltaTime;
 			c.y += c.speedY * deltaTime;
 		}

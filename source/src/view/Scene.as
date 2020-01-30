@@ -34,7 +34,7 @@ package view
     {
       this.removeEventListener(Event.ADDED_TO_STAGE, this.addedToStageHandler);
 
-      this.engine = new Colleagues2d(1/stage.frameRate);
+      this.engine = new Colleagues2d(1000/stage.frameRate);
 
       var leftWall:Wall  = new Wall(-BORDER * 0.5 + PADDING, HEIGHT * 0.5, BORDER, HEIGHT + BORDER * 2, this);
       this.engine.colleagues.push(leftWall);
@@ -72,8 +72,10 @@ package view
     protected function addUnit(size:Number, speed:Number, x:int, y:int):void
     {
       var u:Unit = new Unit(x, y, size, this);
+      u.speedX = Math.random() * 0.1 * (Math.random()>0.5?1:-1);
+      u.speedY = Math.random() * 0.1 * (Math.random()>0.5?1:-1);
+      // trace(u.speedX, u.speedY)
       this.engine.colleagues.push(u);
-      u.speed = speed;
       // u.side = b.y > stage.stageHeight * 0.5 ? 0 : 1;
     }
   
