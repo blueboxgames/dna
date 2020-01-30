@@ -145,12 +145,11 @@ package model
         }
 
         public function hit(player:Player):void {
-            
-            this.currentState = Character.STATE_NAME_PUNCH;
+            if( this.disable )
+                return;
             this.v.character.gotoAndPlay(Character.STATE_NAME_PUNCH);
             // this.currentState = Character.STATE_NAME_IDLE;
             this.disable = true;
-            this.currentCommand = Command.COMMAND_HIT;
         }
 
         public function hitAttackReEnable(e:Event):void {

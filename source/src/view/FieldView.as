@@ -264,19 +264,19 @@ package view
             // Hit
             if( (player1.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT )
             {
-                if( CoreUtils.getDistance(player1.x, player2.x, player2.y, player1.y) > player1.maxHitRadius )
-                    return;
-                player1.v.character.addEventListener(Character.EVENT_END_HIT, player1.hitAttackReEnable);
-                player1.currentCommand ^= Command.COMMAND_HIT;
-                player1.hit(player2);
+                if( CoreUtils.getDistance(player1.x, player2.x, player2.y, player1.y) < player1.maxHitRadius )
+                {
+                    player1.v.character.addEventListener(Character.EVENT_END_HIT, player1.hitAttackReEnable);
+                    player1.hit(player2);
+                }
             }
             if( (player2.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT )
             {
                 if( CoreUtils.getDistance(player1.x, player2.x, player2.y, player1.y) > player2.maxHitRadius )
-                    return;
-                player2.v.character.addEventListener(Character.EVENT_END_HIT, player2.hitAttackReEnable);
-                player2.currentCommand ^= Command.COMMAND_HIT;
-                player2.hit(player1);
+                {
+                    player2.v.character.addEventListener(Character.EVENT_END_HIT, player2.hitAttackReEnable);
+                    player2.hit(player1);
+                }
             }
         }
     }
