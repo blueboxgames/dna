@@ -1,20 +1,26 @@
-package
-{
-    import flash.display.Sprite;
-    import view.FieldView;
+package {
+import flash.display.Sprite;
 
-    [SWF(width=800, height=800)]
-    public class Main extends Sprite
-    {
-        public var field:FieldView;
+import utils.IState;
 
-        public function Main()
-        {
-            this.field = new FieldView();
-            this.field.addRepairable(50, 50);
-            this.field.addRepairable(100, 100);
-            this.stage.addChild(this.field);
-            this.field.initialize();
-        }
+import view.Menu;
+
+[SWF(width=800, height=800)]
+public class Main extends Sprite {
+    private var _currentState:IState;
+
+    public function Main() {
+        changeStateTo(Menu);
     }
+
+    public function changeStateTo(state:Class):void {
+        if (_currentState) {
+            removeChild(_currentState as Sprite);
+            _currentState.destroy();
+            _currentState = null;
+        }
+        _currentState = new state();
+        addChild(_currentState as Sprite);
+    }
+}
 }
