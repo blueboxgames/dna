@@ -7,14 +7,19 @@ package
     import view.PlayerView;
     import model.Tool;
     import model.Repairable;
+    import view.Scene;
+    import flash.events.Event;
 
     public class Main extends Sprite
     {
+        public var scene:Scene;
         public var player1:PlayerView;
         public var player2:PlayerView;
 
         public function Main()
         {
+            this.loaderInfo.addEventListener(Event.COMPLETE, this.loaderInfo_completeHandler)
+
             this.stage.addEventListener(KeyboardEvent.KEY_UP, keyup_eventHandler);
             this.stage.addEventListener(KeyboardEvent.KEY_DOWN, keydown_eventHandler);
             this.player1 = new PlayerView(0xff0000);
@@ -27,8 +32,13 @@ package
             var repairable1:Repairable = new Repairable();
             var tool1:Tool = new Tool(null, repairable1);
         }
+        protected function loaderInfo_completeHandler(e:Event):void
+        {
+            this.scene = new Scene();
+            this.addChild(scene);
+        }
 
-        public function keyup_eventHandler(e:KeyboardEvent):void
+        protected function keyup_eventHandler(e:KeyboardEvent):void
         {
             if( e.keyCode == Keyboard.UP )
                 player1.unexecute(Command.COMMAND_UP);
