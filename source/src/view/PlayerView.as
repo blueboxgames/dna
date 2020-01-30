@@ -11,17 +11,18 @@ package view
         {
             if( DEBUG )
             {
-                character = new CharacterBlue();
                 if( id == 0 )
                 {
+                    character = new CharacterBlue();
                     character.scaleX = character.scaleY = 0.1;
                     this.addChild(character)
                 }
                 else
-                    this.graphics.beginFill(0x0000ff);
-
-                this.graphics.drawRect(0,0,30,60);
-                this.graphics.endFill();
+                {
+                    character = new CharacterRed();
+                    character.scaleX = character.scaleY = 0.1;
+                    this.addChild(character);
+                }
             }
         }
     }
