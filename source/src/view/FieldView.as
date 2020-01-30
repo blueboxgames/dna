@@ -272,7 +272,7 @@ package view
             }
             if( (player2.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT )
             {
-                if( CoreUtils.getDistance(player1.x, player2dssdawwwwwwwwwwwwww.x, player2.y, player1.y) > player2.maxHitRadius )
+                if( CoreUtils.getDistance(player1.x, player2.x, player2.y, player1.y) > player2.maxHitRadius )
                     return;
                 player2.v.character.addEventListener(Character.EVENT_END_HIT, player2.hitAttackReEnable);
                 player2.currentCommand ^= Command.COMMAND_HIT;
