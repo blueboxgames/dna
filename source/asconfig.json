@@ -1,0 +1,13 @@
+{
+    "type": "app",
+    "config": "air",
+    "compilerOptions": {
+        "optimize": false,
+        "default-frame-rate": 24,
+        "output": "bin/dna.swf"
+    },
+    "application": "application.xml",
+    "files": [
+        "src/Main.as"
+    ]
+}
