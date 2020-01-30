@@ -1,14 +1,22 @@
 package model
 {
-    import flash.events.EventDispatcher;
+    import view.ToolView;
 
-    public class Tool extends EventDispatcher
+    public class Tool
     {
         public var id:int;
+        public var x:int;
+        public var y:int;
         public var repairs:int;
-        public function Tool(repairs:int)
+        public var radiusX:int = 5;
+        public var radiusY:int = 5;
+        public var v:ToolView;
+        public function Tool(x:int, y:int, repairs:int)
         {
+            this.x = x;
+            this.y = y;
             this.repairs = repairs;
+            this.v = new ToolView();
         }
 
         public function repair(repairable:Repairable):Boolean

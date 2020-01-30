@@ -1,24 +1,29 @@
 package view
 {
     import flash.display.Sprite;
-    import model.Repairable;
     import flash.ui.Keyboard;
     import flash.events.KeyboardEvent;
     import model.Command;
     import flash.events.Event;
+    import model.Player;
+    import model.Tool;
 
     public class FieldView extends Sprite
     {
+        public const PLAYER1_START_X:int = 0;
+        public const PLAYER1_START_Y:int = 0;
+        public const PLAYER2_START_X:int = 0;
+        public const PLAYER2_START_Y:int = 0;
+
+        private var player1:Player;
+        private var player2:Player;
         private var tools:Array;
-        private var toolsView:Array;
-        private var repairables:Array;
-        private var player1:PlayerView;
-        private var player2:PlayerView;
+        private var objects:Array;
 
         public function FieldView()
         {
             this.tools = new Array();
-            this.repairables = new Array();
+            this.objects = new Array();
         }
 
         public function initialize():void
@@ -26,17 +31,23 @@ package view
             this.addEventListener(Event.ENTER_FRAME, enterFrame_eventHandler);
             this.stage.addEventListener(KeyboardEvent.KEY_UP, keyup_eventHandler);
             this.stage.addEventListener(KeyboardEvent.KEY_DOWN, keydown_eventHandler);
-            this.player1 = new PlayerView(0xff0000);
-            this.player1.x = 200;
-            this.player1.y = 200;
+            this.player1 = new Player(0);
+            this.player1.x = PLAYER1_START_X;
+            this.player1.y = PLAYER1_START_Y;
             this.player1.fieldView = this;
-            this.stage.addChild(player1);
-            this.player2 = new PlayerView(0x0000ff);
+            this.player2 = new Player(1);
+            this.player2.x = PLAYER2_START_X;
+            this.player2.y = PLAYER2_START_Y;
             this.player2.fieldView = this;
-            this.stage.addChild(player2);
+
+            this.addChild(this.player1.v);
+            this.addChild(this.player2.v);
+
+            var tool1:Tool = new Tool(10, 10, 0);
+            this.addChild(tool1.v);
         }
 
-        public function iPick(player:PlayerView):void
+        public function iPick(player:Player):void
         {
             if( player.currentItem != null )
                 return;
@@ -49,7 +60,7 @@ package view
 
         public function addRepairable(x:int, y:int):void
         {
-            var repairable:Repairable = new Repairable();
+            /* var repairable:Repairable = new Repairable();
             repairable.id = this.repairables.length+2;
             this.repairables.push(repairable);
 
@@ -59,7 +70,7 @@ package view
             repairableView.graphics.endFill();
             repairableView.x = x;
             repairableView.y = y;
-            this.addChild(repairableView);
+            this.addChild(repairableView); */
         }
 
         public function keyup_eventHandler(e:KeyboardEvent):void
@@ -97,7 +108,7 @@ package view
             else if( e.keyCode == Keyboard.RIGHT )
                 player1.execute(Command.COMMAND_RIGHT);
             else if( e.keyCode == Keyboard.NUMPAD_ENTER)
-                player1.unexecute(Command.COMMAND_ACTION)
+                player1.execute(Command.COMMAND_ACTION)
             else if( e.keyCode == Keyboard.W )
                 player2.execute(Command.COMMAND_UP);
             else if( e.keyCode == Keyboard.S )
@@ -110,9 +121,20 @@ package view
                 player2.execute(Command.COMMAND_ACTION);
         }
 
+        private function step():void
+        {
+        }
+
         private function enterFrame_eventHandler(e:Event):void
         {
-            
+            if( (player1.currentCommand & Command.COMMAND_UP) == Command.COMMAND_UP )
+                player1.y -= player1.speedFactor;
+            if( (player1.currentCommand & Command.COMMAND_RIGHT ) == Command.COMMAND_RIGHT )
+                player1.x += player1.speedFactor;
+            if( (player1.currentCommand & Command.COMMAND_DOWN ) == Command.COMMAND_DOWN )
+                player1.y += player1.speedFactor;
+            if( (player1.currentCommand & Command.COMMAND_LEFT ) == Command.COMMAND_LEFT )
+                player1.x -= player1.speedFactor;
         }
     }
 }
