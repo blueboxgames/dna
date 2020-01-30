@@ -3,20 +3,31 @@ package view
     import flash.display.Sprite;
     import flash.events.Event;
     import model.Command;
+    import model.Tool;
 
     public class PlayerView extends Sprite
     {
-        public var currentCommand:int;
+        public var fieldView:FieldView;
+
+        public var pickRadius:int = 30;
         public var speedFactor:int = 1;
+        public var currentItem:Tool = null;
+        public var currentCommand:int = Command.COMMAND_IDLE;
+        
+        /**
+         * sets a command flag.
+         */
         public function execute(action:int):int {
-            var status:int = 0; // status = 0 -> successful.
+            var status:int = 0;
             this.currentCommand |= action;
             return status;
         }
 
+        /**
+         * unset a command flag.
+         */
         public function unexecute(action:int):int {
             var status:int = 0;
-            // must remove that flag. ^= might work;
             this.currentCommand ^= action;
             return status;
         }
@@ -47,6 +58,8 @@ package view
                 this.x -= 0.5*this.speedFactor;
             else if( (this.currentCommand & Command.COMMAND_LEFT ) == Command.COMMAND_LEFT )
                 this.x--;
+            if( (this.currentCommand & Command.COMMAND_ACTION) == Command.COMMAND_ACTION )
+                this.fieldView.iPick(this);
         }
     }
 }

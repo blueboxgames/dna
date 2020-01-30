@@ -1,13 +1,24 @@
 package model
 {
-    import view.PlayerView;
+    import flash.events.EventDispatcher;
 
-    public class Tool
+    public class Tool extends EventDispatcher
     {
-        public var repairable:Repairable;
-        public function Tool(player:PlayerView, repairs:Repairable)
+        public var id:int;
+        public var repairs:int;
+        public function Tool(repairs:int)
         {
-            this.repairable = repairable;
+            this.repairs = repairs;
+        }
+
+        public function repair(repairable:Repairable):Boolean
+        {
+            if( this.repairs == 0 || this.repairs == repairable.id )
+            {
+                repairable.repaired = true;
+                return true;
+            }
+            return false;
         }
     }
 }
