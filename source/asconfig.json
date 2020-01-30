@@ -4,7 +4,10 @@
     "compilerOptions": {
         "optimize": false,
         "default-frame-rate": 24,
-        "output": "bin/dna.swf"
+        "output": "bin/dna.swf",
+        "library-path": [
+            "lib"
+        ]
     },
     "application": "application.xml",
     "files": [

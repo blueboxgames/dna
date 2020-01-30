@@ -94,6 +94,8 @@ package view
                 player1.unexecute(Command.COMMAND_RIGHT);
             else if( e.keyCode == 13)
                 player1.unexecute(Command.COMMAND_ACTION)
+            else if( e.keyCode == Keyboard.NUMPAD_ADD )
+                player1.unexecute(Command.COMMAND_HIT);
             else if( e.keyCode == Keyboard.W )
                 player2.unexecute(Command.COMMAND_UP);
             else if( e.keyCode == Keyboard.S )
@@ -104,10 +106,13 @@ package view
                 player2.unexecute(Command.COMMAND_RIGHT);
             else if( e.keyCode == Keyboard.SPACE )
                 player2.unexecute(Command.COMMAND_ACTION);
+            else if( e.keyCode == Keyboard.E )
+                player2.unexecute(Command.COMMAND_HIT);
         }
 
         public function keydown_eventHandler(e:KeyboardEvent):void
         {
+            trace(e.keyCode);
             if( e.keyCode == Keyboard.UP )
                 player1.execute(Command.COMMAND_UP);
             else if( e.keyCode == Keyboard.DOWN )
@@ -117,7 +122,9 @@ package view
             else if( e.keyCode == Keyboard.RIGHT )
                 player1.execute(Command.COMMAND_RIGHT);
             else if( e.keyCode == 13 )
-                player1.execute(Command.COMMAND_ACTION)
+                player1.execute(Command.COMMAND_ACTION);
+            else if( e.keyCode == Keyboard.NUMPAD_ADD )
+                player1.execute(Command.COMMAND_HIT);
             else if( e.keyCode == Keyboard.W )
                 player2.execute(Command.COMMAND_UP);
             else if( e.keyCode == Keyboard.S )
@@ -128,6 +135,8 @@ package view
                 player2.execute(Command.COMMAND_RIGHT);
             else if( e.keyCode == Keyboard.SPACE )
                 player2.execute(Command.COMMAND_ACTION);
+            else if( e.keyCode == Keyboard.E )
+                player2.execute(Command.COMMAND_HIT);
         }
 
         private function playerChange_eventHandler(e:Event):void
@@ -161,6 +170,8 @@ package view
             tools.removeAt(tools.indexOf(toolr));
             player.currentItem = toolr;
             this.removeChild(toolr.v);
+            player.currentState = CharacterBlue.STATE_NAME_CARRY;
+            player.v.character.gotoAndPlay(CharacterBlue.STATE_NAME_CARRY);
         }
 
         private function pItemDrop(player:Player):void
@@ -180,6 +191,9 @@ package view
                     rep = repairable;
                 }
             }
+
+            player.currentState = CharacterBlue.STATE_NAME_IDLE;
+            player.v.character.gotoAndPlay(CharacterBlue.STATE_NAME_IDLE);
             if( player.maxPickRadius < minDist || rep == null )
             {
                 player.currentItem.x = player.x;
@@ -248,6 +262,18 @@ package view
                     else
                         this.pItemDrop(player2);
                 }
+            }
+
+            // Hit
+            if( (player1.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT )
+            {
+                player1.currentState = CharacterBlue.STATE_NAME_PUNCH;
+                player1.hit(player2);
+            }
+            if( (player2.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT )
+            {
+                player2.currentState = CharacterBlue.STATE_NAME_PUNCH;
+                player2.hit(player1);
             }
         }
     }

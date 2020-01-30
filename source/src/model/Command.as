@@ -9,6 +9,7 @@ package model
         public static const COMMAND_RIGHT:int  = 0x0008;
         public static const COMMAND_ACTION:int = 0x0010;
         public static const COMMAND_DROP:int   = 0x0020;
+        public static const COMMAND_HIT:int    = 0x0100;
 
         public function Command()
         {
