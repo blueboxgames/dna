@@ -4,7 +4,12 @@ package
     {
         [Embed(source = "../assets/bolts.png")] public static const Bolts:Class;
         [Embed(source = "../assets/heart.png")] public static const HEART:Class;
+        [Embed(source = "../assets/bgtexture.png")] public static const BG_TEXTURE:Class;
         [Embed(source = "../assets/heart_empty.png")] public static const HEART_EMPTY:Class;
+        [Embed(source = "../assets/win_blue.png")] public static const WIN_BLUE:Class;
+        [Embed(source = "../assets/win_red.png")] public static const WIN_RED:Class;
+        [Embed(source = "../assets/lose_red.png")] public static const LOSE_RED:Class;
+        [Embed(source = "../assets/lose_blue.png")] public static const LOSE_BLUE:Class;
         [Embed(source = "../assets/tv/item1.png")] public static const TV1:Class;
         [Embed(source = "../assets/tv/item2.png")] public static const TV2:Class;
         [Embed(source = "../assets/fan/itam1.png")] public static const FAN1:Class;

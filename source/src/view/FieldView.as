@@ -19,6 +19,7 @@ public class FieldView extends Sprite {
     public static const PLAYER2_START_X:int = 600;
     public static const PLAYER2_START_Y:int = 600;
 
+    public static var winner:int;
     public var player1:Player;
     public var player2:Player;
     private var tools:Array;
@@ -27,9 +28,11 @@ public class FieldView extends Sprite {
     private var _id:int;
 
     public function FieldView(id:int) {
+        this.addChild(new Assets.BG_TEXTURE);
         _id = id;
         this.tools = [];
         this.objects = [];
+        winner = 0;
     }
 
     public function initialize():void {
@@ -88,6 +91,12 @@ public class FieldView extends Sprite {
 
     private function playerChange_eventHandler(e:Event):void {
         var p:Player = e.currentTarget as Player;
+        if( p.score == 1 )
+        {
+            winner = p.id;
+            this.dispatchEvent(new MyEvent(MyEvent.GAME_OVER, false));
+        }
+            
     }
 
     private function step():void {
@@ -210,6 +219,9 @@ public class FieldView extends Sprite {
                 player2.hit(player1);
             }
         }
+
+        if( this.stage == null )
+            return;
 
         if (_id == 1) {
             this.x = (stage.stageWidth * 1 / 4) - player1.x;
