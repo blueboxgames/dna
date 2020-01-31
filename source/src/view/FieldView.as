@@ -14,10 +14,10 @@ import utils.CoreUtils;
 import utils.MyEvent;
 
 public class FieldView extends Sprite {
-    public static const PLAYER1_START_X:int = 238;
-    public static const PLAYER1_START_Y:int = 120;
-    public static const PLAYER2_START_X:int = 482;
-    public static const PLAYER2_START_Y:int = 943;
+    public static const PLAYER1_START_X:int = 550;
+    public static const PLAYER1_START_Y:int = 800;
+    public static const PLAYER2_START_X:int = 790;
+    public static const PLAYER2_START_Y:int = 430;
 
     public static var winner:int;
     public var player1:Player;
