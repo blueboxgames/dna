@@ -16,8 +16,6 @@
             <systemChrome>standard</systemChrome>
             <resizable>true</resizable>
             <title>DNA</title>
-            <width> 1200 </width>
-            <height> 1200 </height>
             <visible>true</visible>
         </initialWindow>
     <supportedProfiles>extendedDesktop</supportedProfiles>
