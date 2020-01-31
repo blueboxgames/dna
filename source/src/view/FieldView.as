@@ -29,6 +29,7 @@ public class FieldView extends Sprite {
 
     public function FieldView(id:int) {
         _bg = new Assets.BG_TEXTURE;
+        _bg.scaleX = _bg.scaleY = 0.5;
         this.addChild(_bg);
         _id = id;
         this.tools = [];
@@ -44,19 +45,21 @@ public class FieldView extends Sprite {
         this.player1.fieldView = this;
         player1.addEventListener(Event.CHANGE, playerChange_eventHandler);
         player1.addEventListener(MyEvent.CHANGE_HEALTH, playerChangeHealth);
+        player1.addEventListener(MyEvent.RESET_HEALTH, playerReset);
         this.player2 = new Player(1);
         this.player2.x = PLAYER2_START_X;
         this.player2.y = PLAYER2_START_Y;
         this.player2.fieldView = this;
         player2.addEventListener(Event.CHANGE, playerChange_eventHandler);
         player2.addEventListener(MyEvent.CHANGE_HEALTH, playerChangeHealth);
+        player2.addEventListener(MyEvent.RESET_HEALTH, playerReset);
 
         this.addChild(this.player1.v);
         this.addChild(this.player2.v);
 
         var repairable1:Repairable = new Repairable(450, 500, Repairable.TYPE_CAR, 0, Repairable.REPAIR_STATE_TWO);
-        var repairable2:Repairable = new Repairable(1200, 700, Repairable.TYPE_FAN, 0, Repairable.REPAIR_STATE_TWO);
-        var repairable3:Repairable = new Repairable(1700, 200, Repairable.TYPE_TV,  0, Repairable.REPAIR_STATE_TWO);
+        var repairable2:Repairable = new Repairable(750, 400, Repairable.TYPE_FAN, 0, Repairable.REPAIR_STATE_TWO);
+        var repairable3:Repairable = new Repairable(100, 900, Repairable.TYPE_TV, 0, Repairable.REPAIR_STATE_TWO);
         this.objects.push(repairable1);
         this.addChild(repairable1.v);
         this.objects.push(repairable2);
@@ -65,13 +68,16 @@ public class FieldView extends Sprite {
         this.addChild(repairable3.v);
 
         this.addTool(new Tool(120, 550, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
-        this.addTool(new Tool(800, 300, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
-        this.addTool(new Tool(346, 1700, Tool.TYPE_FAN_1, Repairable.TYPE_FAN));
-        this.addTool(new Tool(989, 346, Tool.TYPE_FAN_2, Repairable.TYPE_FAN));
+        this.addTool(new Tool(600, 300, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
+        this.addTool(new Tool(346, 900, Tool.TYPE_FAN_1, Repairable.TYPE_FAN));
+        this.addTool(new Tool(560, 346, Tool.TYPE_FAN_2, Repairable.TYPE_FAN));
         this.addTool(new Tool(232, 555, Tool.TYPE_TV_1, Repairable.TYPE_TV));
-        this.addTool(new Tool(423, 1203, Tool.TYPE_TV_2, Repairable.TYPE_TV));
+        this.addTool(new Tool(250, 800, Tool.TYPE_TV_2, Repairable.TYPE_TV));
     }
 
+    private function playerReset(event:MyEvent):void {
+        dispatchEvent(new MyEvent(MyEvent.RESET_HEALTH, false, event.data));
+    }
     private function playerChangeHealth(event:MyEvent):void {
         dispatchEvent(new MyEvent(MyEvent.CHANGE_HEALTH, false, event.data));
     }
@@ -92,8 +98,7 @@ public class FieldView extends Sprite {
 
     private function playerChange_eventHandler(e:Event):void {
         var p:Player = e.currentTarget as Player;
-        if( p.score == 2 )
-        {
+        if (p.score == 2) {
             winner = p.id;
             this.dispatchEvent(new MyEvent(MyEvent.GAME_OVER, false));
         }
@@ -228,31 +233,42 @@ public class FieldView extends Sprite {
             this.x = (stage.stageWidth * 3 / 4) - player2.x;
             this.y = (stage.stageHeight / 2) - player2.y;
         }
-        if(this.x >= 0)
-            this.x = 0;
-        if(this.y >= 0)
-            this.y = 0;
-        if(this.x <= -_bg.width + stage.stageWidth / 2)
-            this.x = -_bg.width + stage.stageWidth / 2;
-        if(this.y <= -_bg.height + stage.stageHeight)
-            this.y = -_bg.height + stage.stageHeight;
-
-        if(player1.x <= 0)
+        if (_id == 1) {
+            if (this.x >= 0)
+                this.x = 0;
+            if (this.y >= 0)
+                this.y = 0;
+            if (this.x <= -_bg.width + stage.stageWidth / 2)
+                this.x = -_bg.width + stage.stageWidth / 2;
+            if (this.y <= -_bg.height + stage.stageHeight)
+                this.y = -_bg.height + stage.stageHeight;
+        }
+        if (_id == 2) {
+            if (this.x >= stage.stageWidth / 2)
+                this.x = stage.stageWidth / 2;
+            if (this.y >= 0)
+                this.y = 0;
+            if (this.x <= -_bg.width + stage.stageWidth)
+                this.x = -_bg.width + stage.stageWidth;
+            if (this.y <= -_bg.height + stage.stageHeight)
+                this.y = -_bg.height + stage.stageHeight;
+        }
+        if (player1.x <= 0)
             player1.x = 0;
-        if(player1.y <= 0)
+        if (player1.y <= 0)
             player1.y = 0;
-        if(player1.x >= _bg.width)
+        if (player1.x >= _bg.width)
             player1.x = _bg.width;
-        if(player1.y >= _bg.height)
+        if (player1.y >= _bg.height)
             player1.y = _bg.height;
 
-        if(player2.x <= 0)
+        if (player2.x <= 0)
             player2.x = 0;
-        if(player2.y <= 0)
+        if (player2.y <= 0)
             player2.y = 0;
-        if(player2.x >= _bg.width)
+        if (player2.x >= _bg.width)
             player2.x = _bg.width;
-        if(player2.y >= _bg.height)
+        if (player2.y >= _bg.height)
             player2.y = _bg.height;
     }
 }

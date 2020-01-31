@@ -27,5 +27,14 @@ public class HUD extends Sprite {
             healthGroup2.decrease();
         }
     }
+
+    public function resetHealth(value:int, id:int):void {
+        if(id == 0) {
+            healthGroup1.reset();
+        }
+        if(id == 1) {
+            healthGroup2.reset();
+        }
+    }
 }
 }

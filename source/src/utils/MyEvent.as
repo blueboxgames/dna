@@ -9,6 +9,7 @@ public class MyEvent extends Event {
     public static const CHANGE_HEALTH:String = "changeHealth";
 
     private var _data:Object;
+    public static const RESET_HEALTH:String = "resetHealth";
 
     public function MyEvent(type:String, bubbles:Boolean = false, data:Object = null) {
         super(type, bubbles, false);

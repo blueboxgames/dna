@@ -20,7 +20,6 @@ public class GameOver extends Sprite implements IState {
     private function onAddedToStage(e:Event):void {
         this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
         var playBtn:ButtonRed = new ButtonRed();
-        playBtn.text_field.text = "Play Again";
         playBtn.x = (stage.stageWidth - playBtn.width) / 2;
         playBtn.y = (stage.stageHeight - playBtn.height) / 2 + 100;
         addChild(playBtn);

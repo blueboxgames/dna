@@ -47,6 +47,7 @@ public class Battle extends Sprite implements IState {
         mask1.graphics.endFill();
         field1.mask = mask1;
         field1.addEventListener(MyEvent.CHANGE_HEALTH, onChangeHealthOnlyOnce);
+        field1.addEventListener(MyEvent.RESET_HEALTH, onResetHealthOnlyOnce);
 
         this.field2 = new FieldView(2);
         this.field2.addRepairable(50, 50);
@@ -64,11 +65,15 @@ public class Battle extends Sprite implements IState {
         var frame:Shape = new Shape();
         frame.x = stage.stageWidth * 0.5;
         frame.graphics.lineStyle(3, 0, 1);
-        frame.graphics.lineTo(0,this.stage.stageHeight);
+        frame.graphics.lineTo(0, this.stage.stageHeight);
         this.addChild(frame);
 
         _hud = new HUD();
         addChild(_hud);
+    }
+
+    private function onResetHealthOnlyOnce(event:MyEvent):void {
+        _hud.resetHealth(event.data.value, event.data.id);
     }
 
     private function onChangeHealthOnlyOnce(event:MyEvent):void {
@@ -189,6 +194,10 @@ public class Battle extends Sprite implements IState {
     }
 
     public function keydown_eventHandler(e:KeyboardEvent):void {
+        if (e.keyCode == Keyboard.ESCAPE) {
+            e.preventDefault();
+            dispatchEvent(new MyEvent(MyEvent.REQUEST_STATE, false, {state: Battle}));
+        }
         if (e.keyCode == Keyboard.UP) {
             this.field1.player1.execute(Command.COMMAND_UP);
             this.field2.player1.execute(Command.COMMAND_UP);
@@ -243,11 +252,10 @@ public class Battle extends Sprite implements IState {
     }
 
     public function destroy():void {
-        
+
     }
 
-    private function onGameOver(event:MyEvent):void
-    {
+    private function onGameOver(event:MyEvent):void {
         this.dispatchEvent(new MyEvent(MyEvent.REQUEST_STATE, true, {state: GameOver}));
     }
 }

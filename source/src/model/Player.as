@@ -53,18 +53,21 @@ public class Player extends EventDispatcher {
         fieldView.dispatchEvent(new MyEvent(MyEvent.CHANGE_HEALTH, false, {value: _health, id: id}));
         if (this.health <= 0) {
 //            this.fieldView.healthGroup.reset();
+            fieldView.dispatchEvent(new MyEvent(MyEvent.RESET_HEALTH, false, {id: id}));
             this.die();
         }
         if (this.health < 0) {
 //            this.fieldView.healthGroup.reset();
+            fieldView.dispatchEvent(new MyEvent(MyEvent.RESET_HEALTH, false, {id: id}));
+
             this.endDie()
         }
     }
 
     public var radiusX:int = 10;
     public var radiusY:int = 10;
-    public var maxPickRadius:Number = 140;
-    public var maxHitRadius:Number = 100;
+    public var maxPickRadius:Number = 80;
+    public var maxHitRadius:Number = 80;
     public var v:PlayerView;
     public var fieldView:FieldView;
 
