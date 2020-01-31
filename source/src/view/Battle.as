@@ -32,7 +32,7 @@ public class Battle extends Sprite implements IState {
         this.field1 = new FieldView(1);
         this.field1.x = 0;
         this.field1.addRepairable(50, 50);
-        this.stage.addChild(field1);
+        this.addChild(field1);
         this.field1.initialize();
 
         var mask1:Shape = new Shape();
@@ -44,7 +44,7 @@ public class Battle extends Sprite implements IState {
         this.field2 = new FieldView(2);
         this.field2.addRepairable(50, 50);
         this.field2.x = stage.stageWidth / 2;
-        this.stage.addChild(field2);
+        this.addChild(field2);
         this.field2.initialize();
 
         var mask2:Shape = new Shape();
@@ -52,6 +52,9 @@ public class Battle extends Sprite implements IState {
         mask2.graphics.drawRect(stage.stageWidth / 2, 0, stage.stageWidth / 2, stage.stageHeight);
         mask2.graphics.endFill();
         field2.mask = mask2;
+
+        var frame:Frame = new Frame();
+        addChild(frame);
     }
 
     private function onInputEnd(event:MyEvent):void {
