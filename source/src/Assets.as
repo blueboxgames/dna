@@ -19,6 +19,7 @@ package
         [Embed(source = "../assets/tv/1-broken.png")] public static const TV_D1:Class;
         [Embed(source = "../assets/tv/2-repair1.png")] public static const TV_D2:Class;
         [Embed(source = "../assets/tv/3-repair2.png")] public static const TV_D3:Class;
+        [Embed(source = "../assets/logo.png")] public static const Logo:Class;
         public function Assets()
         {
         }

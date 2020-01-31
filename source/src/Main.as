@@ -10,6 +10,7 @@ import utils.IState;
 import utils.MyEvent;
 
 import view.Menu;
+import view.SplashScreen;
 
 [SWF(width=800, height=480)]
 
@@ -25,9 +26,8 @@ public class Main extends Sprite {
     private var _inputControl:InputController;
 
     public function Main() {
-        changeStateTo(Menu);
-
         _inputControl = new InputController();
+        changeStateTo(Menu);
 
         this.addEventListener(Event.ENTER_FRAME, enterFrame_eventHandler);
 
