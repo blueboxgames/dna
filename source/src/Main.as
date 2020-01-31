@@ -4,7 +4,9 @@ import com.alexomara.ane.AIRControl.AIRControl;
 import control.InputController;
 
 import flash.display.Sprite;
+import flash.display.StageDisplayState;
 import flash.events.Event;
+import flash.media.Sound;
 
 import utils.IState;
 import utils.MyEvent;
@@ -22,15 +24,21 @@ public class Main extends Sprite {
             advancedAntiAliasing="true",
             embedAsCFF="false")]
     private var _arialRoundedFont:Class;
+
+    [Embed(source="../assets/battle.mp3")]
+    public var bgSoundClass:Class;
+
     private var _inputControl:InputController;
 
     public function Main() {
+        _inputControl = new InputController();
         changeStateTo(Menu);
 
-        _inputControl = new InputController();
-
+        stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
         this.addEventListener(Event.ENTER_FRAME, enterFrame_eventHandler);
 
+        var smallSound:Sound = new bgSoundClass() as Sound;
+        smallSound.play(0, 99);
     }
 
     private function enterFrame_eventHandler(event:Event):void {

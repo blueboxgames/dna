@@ -26,6 +26,7 @@ package
         [Embed(source = "../assets/tv/3-repair2.png")] public static const TV_D3:Class;
         [Embed(source = "../assets/misc/t1.png")] public static const TREE1:Class;
         [Embed(source = "../assets/misc/t2.png")] public static const TREE2:Class;
+        [Embed(source = "../assets/logo.png")] public static const Logo:Class;
         public function Assets()
         {
         }

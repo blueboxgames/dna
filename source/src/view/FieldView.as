@@ -1,6 +1,5 @@
 package view {
-import control.HeartGroup;
-
+import flash.display.Bitmap;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.utils.setTimeout;
@@ -26,9 +25,11 @@ public class FieldView extends Sprite {
     private var objects:Array;
 
     private var _id:int;
+    private var _bg:Bitmap;
 
     public function FieldView(id:int) {
-        this.addChild(new Assets.BG_TEXTURE);
+        _bg = new Assets.BG_TEXTURE;
+        this.addChild(_bg);
         _id = id;
         this.tools = [];
         this.objects = [];
@@ -36,6 +37,11 @@ public class FieldView extends Sprite {
     }
 
     public function initialize():void {
+
+        var repairable1:Repairable = new Repairable(450, 100, Repairable.TYPE_CAR, 0, Repairable.REPAIR_STATE_TWO);
+        this.objects.push(repairable1);
+        this.addChild(repairable1.v);
+
         this.player1 = new Player(0);
         this.player1.x = PLAYER1_START_X;
         this.player1.y = PLAYER1_START_Y;
@@ -91,7 +97,6 @@ public class FieldView extends Sprite {
             winner = p.id;
             this.dispatchEvent(new MyEvent(MyEvent.GAME_OVER, false));
         }
-            
     }
 
     private function step():void {
@@ -122,7 +127,6 @@ public class FieldView extends Sprite {
     private function pItemDrop(player:Player):void {
         if (player.currentItem == null)
             return;
-
         // Check if near repairable
         var rep:Repairable = null;
         var minDist:Number = Number.MAX_VALUE;
@@ -133,7 +137,6 @@ public class FieldView extends Sprite {
                 rep = repairable;
             }
         }
-
         player.currentState = Character.STATE_NAME_IDLE;
         player.v.character.gotoAndPlay(Character.STATE_NAME_IDLE);
         if (player.maxPickRadius < minDist || rep == null) {
@@ -215,7 +218,7 @@ public class FieldView extends Sprite {
             }
         }
 
-        if( this.stage == null )
+        if (this.stage == null)
             return;
 
         if (_id == 1) {
@@ -225,6 +228,32 @@ public class FieldView extends Sprite {
             this.x = (stage.stageWidth * 3 / 4) - player2.x;
             this.y = (stage.stageHeight / 2) - player2.y;
         }
+        if(this.x >= 0)
+            this.x = 0;
+        if(this.y >= 0)
+            this.y = 0;
+        if(this.x <= -_bg.width + stage.stageWidth / 2)
+            this.x = -_bg.width + stage.stageWidth / 2;
+        if(this.y <= -_bg.height + stage.stageHeight)
+            this.y = -_bg.height + stage.stageHeight;
+
+        if(player1.x <= 0)
+            player1.x = 0;
+        if(player1.y <= 0)
+            player1.y = 0;
+        if(player1.x >= _bg.width)
+            player1.x = _bg.width;
+        if(player1.y >= _bg.height)
+            player1.y = _bg.height;
+
+        if(player2.x <= 0)
+            player2.x = 0;
+        if(player2.y <= 0)
+            player2.y = 0;
+        if(player2.x >= _bg.width)
+            player2.x = _bg.width;
+        if(player2.y >= _bg.height)
+            player2.y = _bg.height;
     }
 }
 }

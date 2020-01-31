@@ -57,11 +57,9 @@ public class GameOver extends Sprite implements IState {
     }
 
     public function update():void {
-
     }
 
     public function destroy():void {
-
     }
 }
 }
