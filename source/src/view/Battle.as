@@ -243,7 +243,7 @@ public class Battle extends Sprite implements IState {
 
     private function onGameOver(event:MyEvent):void
     {
-        this.dispatchEvent(new MyEvent(MyEvent.REQUEST_STATE, true, {state: GameOver, winner: event.data.winner}));
+        this.dispatchEvent(new MyEvent(MyEvent.REQUEST_STATE, true, {state: GameOver}));
     }
 }
 }
