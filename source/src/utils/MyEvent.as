@@ -3,9 +3,9 @@ import flash.events.Event;
 
 public class MyEvent extends Event {
     public static const REQUEST_STATE:String = "requestState";
-
     public static const INPUT_START:String = "inputStart";
     public static const INPUT_END:String = "inputEnd";
+    public static const CHANGE_HEALTH:String = "changeHealth";
 
     private var _data:Object;
 
