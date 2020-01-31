@@ -38,10 +38,6 @@ public class FieldView extends Sprite {
 
     public function initialize():void {
 
-        var repairable1:Repairable = new Repairable(450, 100, Repairable.TYPE_CAR, 0, Repairable.REPAIR_STATE_TWO);
-        this.objects.push(repairable1);
-        this.addChild(repairable1.v);
-
         this.player1 = new Player(0);
         this.player1.x = PLAYER1_START_X;
         this.player1.y = PLAYER1_START_Y;
@@ -63,6 +59,10 @@ public class FieldView extends Sprite {
         var repairable3:Repairable = new Repairable(1700, 200, Repairable.TYPE_TV,  0, Repairable.REPAIR_STATE_TWO);
         this.objects.push(repairable1);
         this.addChild(repairable1.v);
+        this.objects.push(repairable2);
+        this.addChild(repairable2.v);
+        this.objects.push(repairable3);
+        this.addChild(repairable3.v);
 
         this.addTool(new Tool(120, 550, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
         this.addTool(new Tool(800, 300, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
