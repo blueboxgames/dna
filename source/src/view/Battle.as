@@ -53,8 +53,11 @@ public class Battle extends Sprite implements IState {
         mask2.graphics.endFill();
         field2.mask = mask2;
 
-        var frame:Frame = new Frame();
-        addChild(frame);
+        var frame:Shape = new Shape();
+        frame.x = stage.stageWidth * 0.5;
+        frame.graphics.lineStyle(3, 0, 1);
+        frame.graphics.lineTo(0,this.stage.stageHeight);
+        this.addChild(frame);
     }
 
     private function onInputEnd(event:MyEvent):void {
