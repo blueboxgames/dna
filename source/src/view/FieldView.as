@@ -88,10 +88,6 @@ public class FieldView extends Sprite {
 
     private function playerChange_eventHandler(e:Event):void {
         var p:Player = e.currentTarget as Player;
-        trace("c");
-        trace(p.score);
-        if( p.score == 1 )
-            this.dispatchEvent(new MyEvent(MyEvent.GAME_OVER, false, {winner: p.id}));
     }
 
     private function step():void {
