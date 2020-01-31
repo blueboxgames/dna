@@ -55,11 +55,15 @@ package model
         public function set health(value:int):void
         {
             _health = value;
-            trace("HEL" + _health);
+            this.fieldView.healthGroup.decrease();
             if( this.health <= 0 )
+            {
+                this.fieldView.healthGroup.reset();
                 this.die();
+            }
             if( this.health < 0 )
             {
+                this.fieldView.healthGroup.reset();
                 this.endDie()
             }
         }
