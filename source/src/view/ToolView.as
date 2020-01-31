@@ -31,19 +31,19 @@ package view
             if( type == Tool.TYPE_FAN_1 )
             {
                 graphic = new Assets.FAN1();
-                graphic.scaleX = graphic.scaleY = 0.05;
+                graphic.scaleX = graphic.scaleY = 0.2;
             }
 
             if( type == Tool.TYPE_FAN_2 )
             {
                 graphic = new Assets.FAN2();
-                graphic.scaleX = graphic.scaleY = 0.05;
+                graphic.scaleX = graphic.scaleY = 0.2;
             }
 
             if( type == Tool.TYPE_CAR_1 )
             {
                 graphic = new Assets.CAR1();
-                graphic.scaleX = graphic.scaleY = 0.05;
+                graphic.scaleX = graphic.scaleY = 0.2;
             }
             
             this.addChild(graphic);

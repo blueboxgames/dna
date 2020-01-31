@@ -5,10 +5,10 @@ package model
     public class Tool
     {
         public static const TYPE_SCREW:int = 0;
-        public static const TYPE_TV_1:int = 1;
-        public static const TYPE_TV_2:int = 2;
-        public static const TYPE_FAN_1:int = 3;
-        public static const TYPE_FAN_2:int = 4;
+        public static const TYPE_FAN_1:int = 1;
+        public static const TYPE_FAN_2:int = 2;
+        public static const TYPE_TV_1:int = 3;
+        public static const TYPE_TV_2:int = 4;
         public static const TYPE_CAR_1:int = 5;
 
         public var id:int;

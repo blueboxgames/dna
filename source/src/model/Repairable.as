@@ -7,12 +7,10 @@ package model
         public static const REPAIR_STATE_NONE:int  = 0x0;
         public static const REPAIR_STATE_ONE:int   = 0x1;
         public static const REPAIR_STATE_TWO:int   = 0x2;
-        public static const REPAIR_STATE_THREE:int = 0x4;
-        public static const REPAIR_STATE_FOUR:int  = 0x8;
 
-        public static const TYPE_RADIO:int = 0x0;
-        public static const TYPE_TV:int = 0x1;
-        public static const TYPE_CAR:int = 0x2;
+        public static const TYPE_FAN:int = 0x1;
+        public static const TYPE_TV:int = 0x2;
+        public static const TYPE_CAR:int = 0x3;
 
         public var id:int = 1;
         public var v:RepairableView;
@@ -42,6 +40,7 @@ package model
         public function set currentRepairState(value:int):void
         {
             _currentRepairState = value;
+            this.v.state = _currentRepairState;
         }
 
         private var _x:int;
@@ -71,12 +70,13 @@ package model
         }
         
         public function Repairable(x:int, y:int, type:int, screwReq:int, maxRepState:int) {
-            this.v = new RepairableView();
+            this.v = new RepairableView(type);
             this.x = x;
             this.y = y;
             this.type = type;
             this.screwReq = screwReq;
-            this.maxRepairState = maxRepairState;
+            this.maxRepairState = maxRepState;
+            trace(this.maxRepairState);
             this.currentRepairState = REPAIR_STATE_NONE;
         }
 
@@ -93,23 +93,14 @@ package model
                 return false;
             
             if( tool.repairs == 0 )
-            {
                 this.screwReq--;
-                return true;
-            }
 
             if( tool.repairs == this.type )
-            {
-                this.currentRepairState |= tool.state;
-                return true;
-            }
+                this.currentRepairState++;
 
             if( checkRepair() )
-            {
                 this.repaired = true;
-                return false;
-            }
-            return false;
+            return true;
         }
     }
 }

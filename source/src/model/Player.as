@@ -78,7 +78,7 @@ package model
             _disable = value;
         }
 
-        public var speedFactor:int = 2;
+        public var speedFactor:int = 4;
         public var currentItem:Tool = null;
         public var actionDisable:Boolean = false;
         public var currentState:String = Character.STATE_NAME_IDLE;
@@ -137,6 +137,7 @@ package model
         public function set score(value:int):void
         {
             _score = value;
+            trace("SCORE = " + value);
             this.dispatchEvent(new Event(Event.CHANGE));
         }
         /**

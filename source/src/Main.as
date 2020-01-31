@@ -6,7 +6,7 @@ import utils.MyEvent;
 
 import view.Menu;
 
-[SWF(width=720, height=720)]
+[SWF(width=720, height=720, backgroundColor="#111111")]
 
 public class Main extends Sprite {
     private var _currentState:IState;

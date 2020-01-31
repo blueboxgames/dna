@@ -46,9 +46,12 @@ package view
             this.addChild(this.player1.v);
             this.addChild(this.player2.v);
 
-            var repairable1:Repairable = new Repairable(450, 100, Repairable.TYPE_TV, 1, Repairable.REPAIR_STATE_NONE);
+            var repairable1:Repairable = new Repairable(450, 100, Repairable.TYPE_CAR, 0, Repairable.REPAIR_STATE_TWO);
             this.objects.push(repairable1);
             this.addChild(repairable1.v);
+
+            this.addTool(new Tool(100, 100, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
+            this.addTool(new Tool(100, 200, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
             
         }
 
@@ -151,7 +154,10 @@ package view
                 {
                     player.currentItem = null;
                     if( rep.repaired )
+                    {
+                        trace("Repaired!");
                         player.score++;
+                    }
                 }
             }
         }
