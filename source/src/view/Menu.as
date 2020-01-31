@@ -1,4 +1,6 @@
 package view {
+import control.InputController;
+
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
@@ -10,7 +12,7 @@ import utils.IState;
 import utils.MyEvent;
 
 public class Menu extends Sprite implements IState{
-    public function Menu() {
+    public function Menu(input:InputController) {
         super();
         addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
     }
@@ -37,6 +39,9 @@ public class Menu extends Sprite implements IState{
                 dispatchEvent(new MyEvent(MyEvent.REQUEST_STATE, false, {state: Battle}));
                 break;
         }
+    }
+
+    public function update():void {
     }
 
     public function destroy():void {
