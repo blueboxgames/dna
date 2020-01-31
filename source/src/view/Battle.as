@@ -35,6 +35,7 @@ public class Battle extends Sprite implements IState {
         this.field1.addRepairable(50, 50);
         this.addChild(field1);
         this.field1.initialize();
+        this.field1.addEventListener(MyEvent.GAME_OVER, onGameOver);
 
         var mask1:Shape = new Shape();
         mask1.graphics.beginFill(0);
@@ -237,6 +238,13 @@ public class Battle extends Sprite implements IState {
     }
 
     public function destroy():void {
+        
+    }
+
+    private function onGameOver(event:MyEvent):void
+    {
+        this.dispatchEvent(new MyEvent(MyEvent.REQUEST_STATE, true, {state: GameOver, winner: event.data.winner}));
+
     }
 }
 }
