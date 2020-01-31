@@ -158,9 +158,17 @@ package model
             this.disable = false;
             this.v.character.gotoAndPlay(Character.STATE_NAME_IDLE);
             if( this.id == 0 )
-                this.fieldView.player2.health -= this.damage;
+            {
+                if( CoreUtils.getDistance(this.x, this.fieldView.player2.x, this.y, this.fieldView.player2.y) < this.maxHitRadius)
+                    this.fieldView.player2.health -= this.damage;
+                return;
+            }
             else
-                this.fieldView.player1.health -= this.damage;
+            {
+                if( CoreUtils.getDistance(this.x, this.fieldView.player1.x, this.y, this.fieldView.player1.y) < this.maxHitRadius)
+                    this.fieldView.player1.health -= this.damage;
+                return;
+            }
         }
 
         private function die():void {
