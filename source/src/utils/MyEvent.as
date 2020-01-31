@@ -8,6 +8,7 @@ public class MyEvent extends Event {
 
     public function MyEvent(type:String, bubbles:Boolean = false, data:Object = null) {
         super(type, bubbles, false);
+        this._data = data;
     }
 
     public function get data():Object {

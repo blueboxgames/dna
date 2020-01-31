@@ -1,5 +1,6 @@
 package view {
 import flash.display.Sprite;
+import flash.events.Event;
 
 import utils.IState;
 
@@ -8,6 +9,11 @@ public class Battle extends Sprite implements IState{
 
     public function Battle() {
         super();
+        addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+    }
+
+    private function onAddedToStage(event:Event):void {
+        removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 
         this.field = new FieldView();
         this.field.addRepairable(50, 50);
