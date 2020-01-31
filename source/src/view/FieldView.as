@@ -14,10 +14,10 @@ import utils.CoreUtils;
 import utils.MyEvent;
 
 public class FieldView extends Sprite {
-    public static const PLAYER1_START_X:int = 0;
-    public static const PLAYER1_START_Y:int = 0;
-    public static const PLAYER2_START_X:int = 600;
-    public static const PLAYER2_START_Y:int = 600;
+    public static const PLAYER1_START_X:int = 238;
+    public static const PLAYER1_START_Y:int = 120;
+    public static const PLAYER2_START_X:int = 482;
+    public static const PLAYER2_START_Y:int = 943;
 
     public static var winner:int;
     public var player1:Player;
@@ -81,17 +81,6 @@ public class FieldView extends Sprite {
     }
 
     public function addRepairable(x:int, y:int):void {
-        /* var repairable:Repairable = new Repairable();
-        repairable.id = this.repairables.length+2;
-        this.repairables.push(repairable);
-
-        var repairableView:Sprite = new Sprite();
-        repairableView.graphics.beginFill(0x00ff00, 1);
-        repairableView.graphics.drawRect(0, 0, 50, 50);
-        repairableView.graphics.endFill();
-        repairableView.x = x;
-        repairableView.y = y;
-        this.addChild(repairableView); */
     }
 
 
