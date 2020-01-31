@@ -64,12 +64,6 @@ public class InputController extends EventDispatcher {
                 }
                 break;
         }
-//        trace("id: " + c.id);//the name of this control. Ex: "AXIS_0"
-//        trace("value: " + c.value); //value of this control - Axis: -1 to 1, Button: 0 OR 1, Trigger: 0 to 1
-//        trace("cont: " + c.device.name); //the name of the device. ie: "XBOX 360 Controller"
-//        trace("device: " + c.device);
-//        trace("minValue: " + c.minValue);//the minimum possible value for the control/input
-//        trace("maxValue: " + c.maxValue);//the maximum possible value for the control/input
     }
 
     private function controllerRemoved(e:GameInputEvent):void {
