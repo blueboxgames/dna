@@ -16,6 +16,7 @@ import utils.MyEvent;
 public class Battle extends Sprite implements IState {
     public var field1:FieldView;
     public var field2:FieldView;
+    private var _hud:HUD;
 
     public function Battle(input:InputController) {
         super();
@@ -41,6 +42,7 @@ public class Battle extends Sprite implements IState {
         mask1.graphics.drawRect(0, 0, stage.stageWidth / 2, stage.stageHeight);
         mask1.graphics.endFill();
         field1.mask = mask1;
+        field1.addEventListener(MyEvent.CHANGE_HEALTH, onChangeHealthOnlyOnce);
 
         this.field2 = new FieldView(2);
         this.field2.addRepairable(50, 50);
@@ -59,6 +61,13 @@ public class Battle extends Sprite implements IState {
         frame.graphics.lineStyle(3, 0, 1);
         frame.graphics.lineTo(0,this.stage.stageHeight);
         this.addChild(frame);
+
+        _hud = new HUD();
+        addChild(_hud);
+    }
+
+    private function onChangeHealthOnlyOnce(event:MyEvent):void {
+        _hud.updateHealth(event.data.value, event.data.id);
     }
 
     private function onInputEnd(event:MyEvent):void {

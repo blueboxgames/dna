@@ -1,4 +1,6 @@
 package view {
+import control.HeartGroup;
+
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.utils.setTimeout;
@@ -9,7 +11,6 @@ import model.Repairable;
 import model.Tool;
 
 import utils.CoreUtils;
-import control.HeartGroup;
 import utils.MyEvent;
 
 public class FieldView extends Sprite {
@@ -31,54 +32,44 @@ public class FieldView extends Sprite {
         this.objects = [];
     }
 
-    public var healthGroup:HeartGroup;
+    public function initialize():void {
+        this.player1 = new Player(0);
+        this.player1.x = PLAYER1_START_X;
+        this.player1.y = PLAYER1_START_Y;
+        this.player1.fieldView = this;
+        player1.addEventListener(Event.CHANGE, playerChange_eventHandler);
+        player1.addEventListener(MyEvent.CHANGE_HEALTH, playerChangeHealth);
+        this.player2 = new Player(1);
+        this.player2.x = PLAYER2_START_X;
+        this.player2.y = PLAYER2_START_Y;
+        this.player2.fieldView = this;
+        player2.addEventListener(Event.CHANGE, playerChange_eventHandler);
+        player2.addEventListener(MyEvent.CHANGE_HEALTH, playerChangeHealth);
 
-        public function initialize():void
-        {
-            if( this._id == 0 )
-            {
-                this.healthGroup = new HeartGroup(Player.START_HEALTH, true);
-                this.x = 0;
-            }
-            else
-            {
-                this.healthGroup = new HeartGroup(Player.START_HEALTH, false)
-                this.x = 800;
-            }
-            this.addChild(this.healthGroup);
+        this.addChild(this.player1.v);
+        this.addChild(this.player2.v);
 
-            this.player1 = new Player(0);
-            this.player1.x = PLAYER1_START_X;
-            this.player1.y = PLAYER1_START_Y;
-            this.player1.fieldView = this;
-            player1.addEventListener(Event.CHANGE, playerChange_eventHandler);
-            this.player2 = new Player(1);
-            this.player2.x = PLAYER2_START_X;
-            this.player2.y = PLAYER2_START_Y;
-            this.player2.fieldView = this;
-            player2.addEventListener(Event.CHANGE, playerChange_eventHandler);
+        var repairable1:Repairable = new Repairable(450, 100, Repairable.TYPE_CAR, 0, Repairable.REPAIR_STATE_TWO);
+        this.objects.push(repairable1);
+        this.addChild(repairable1.v);
 
-            this.addChild(this.player1.v);
-            this.addChild(this.player2.v);
+        this.addTool(new Tool(100, 100, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
+        this.addTool(new Tool(100, 200, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
+    }
 
-            var repairable1:Repairable = new Repairable(450, 100, Repairable.TYPE_CAR, 0, Repairable.REPAIR_STATE_TWO);
-            this.objects.push(repairable1);
-            this.addChild(repairable1.v);
-
-            this.addTool(new Tool(100, 100, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
-            this.addTool(new Tool(100, 200, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
-        }
+    private function playerChangeHealth(event:MyEvent):void {
+        dispatchEvent(new MyEvent(MyEvent.CHANGE_HEALTH, false, event.data));
+    }
 
     public function playerPickCallback(player:Player):void {
         if (player.currentItem != null)
             return;
     }
 
-        public function addTool(tool:Tool):void
-        {
-            this.tools.push(tool);
-            this.addChild(tool.v);
-        }
+    public function addTool(tool:Tool):void {
+        this.tools.push(tool);
+        this.addChild(tool.v);
+    }
 
     public function addRepairable(x:int, y:int):void {
         /* var repairable:Repairable = new Repairable();
@@ -169,8 +160,7 @@ public class FieldView extends Sprite {
     public function update():void {
         // Movement
 
-        if( !player1.disable )
-        {
+        if (!player1.disable) {
             if ((player1.currentCommand & Command.COMMAND_UP) == Command.COMMAND_UP)
                 player1.y -= player1.speedFactor;
             if ((player1.currentCommand & Command.COMMAND_RIGHT) == Command.COMMAND_RIGHT)
@@ -181,8 +171,7 @@ public class FieldView extends Sprite {
                 player1.x -= player1.speedFactor;
         }
 
-        if( !player2.disable )
-        {
+        if (!player2.disable) {
             if ((player2.currentCommand & Command.COMMAND_UP) == Command.COMMAND_UP)
                 player2.y -= player2.speedFactor;
             if ((player2.currentCommand & Command.COMMAND_RIGHT) == Command.COMMAND_RIGHT)
@@ -194,7 +183,7 @@ public class FieldView extends Sprite {
         }
 
         // Action
-        if ( !player1.actionDisable && !player1.disable ) {
+        if (!player1.actionDisable && !player1.disable) {
             if ((player1.currentCommand & Command.COMMAND_ACTION) == Command.COMMAND_ACTION) {
                 if (player1.currentItem == null)
                     this.pItemPick(player1);
@@ -203,7 +192,7 @@ public class FieldView extends Sprite {
             }
         }
 
-        if (!player2.actionDisable && !player2.disable ) {
+        if (!player2.actionDisable && !player2.disable) {
             if ((player2.currentCommand & Command.COMMAND_ACTION) == Command.COMMAND_ACTION) {
                 if (player2.currentItem == null)
                     this.pItemPick(player2);
@@ -213,27 +202,23 @@ public class FieldView extends Sprite {
         }
 
         // Hit
-        if( !player1.disable )
-        {
+        if (!player1.disable) {
             if ((player1.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT) {
                 player1.v.character.addEventListener(Character.EVENT_END_HIT, player1.hitAttackReEnable);
                 player1.hit(player2);
             }
         }
-        if( !player2.disable )
-        {
+        if (!player2.disable) {
             if ((player2.currentCommand & Command.COMMAND_HIT) == Command.COMMAND_HIT) {
                 player2.v.character.addEventListener(Character.EVENT_END_HIT, player2.hitAttackReEnable);
                 player2.hit(player1);
             }
         }
 
-        if( stage == null )
-            return;
-        if(_id == 1) {
+        if (_id == 1) {
             this.x = (stage.stageWidth * 1 / 4) - player1.x;
             this.y = (stage.stageHeight / 2) - player1.y;
-        } else if(_id == 2) {
+        } else if (_id == 2) {
             this.x = (stage.stageWidth * 3 / 4) - player2.x;
             this.y = (stage.stageHeight / 2) - player2.y;
         }
