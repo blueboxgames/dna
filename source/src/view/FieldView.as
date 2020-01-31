@@ -112,6 +112,7 @@ package view
 
         public function keydown_eventHandler(e:KeyboardEvent):void
         {
+            trace("key down:", e.keyCode);
             if( e.keyCode == Keyboard.UP )
                 player1.execute(Command.COMMAND_UP);
             else if( e.keyCode == Keyboard.DOWN )

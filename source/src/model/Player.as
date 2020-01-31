@@ -76,7 +76,7 @@ package model
         
         public function get currentCommand():int
         {
-            trace(_currentCommand);
+            //trace(_currentCommand);
             return _currentCommand;
         }
         

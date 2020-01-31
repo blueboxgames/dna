@@ -1,6 +1,8 @@
 package
 {
-    import flash.display.Sprite;
+import control.InputController;
+
+import flash.display.Sprite;
     import view.FieldView;
 
     [SWF(width=800, height=800)]
