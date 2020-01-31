@@ -32,8 +32,6 @@ package view
         public function initialize():void
         {
             this.addEventListener(Event.ENTER_FRAME, enterFrame_eventHandler);
-            this.stage.addEventListener(KeyboardEvent.KEY_UP, keyup_eventHandler);
-            this.stage.addEventListener(KeyboardEvent.KEY_DOWN, keydown_eventHandler);
             this.player1 = new Player(0);
             this.player1.x = PLAYER1_START_X;
             this.player1.y = PLAYER1_START_Y;
@@ -82,61 +80,7 @@ package view
             this.addChild(repairableView); */
         }
 
-        public function keyup_eventHandler(e:KeyboardEvent):void
-        {
-            if( e.keyCode == Keyboard.UP )
-                player1.unexecute(Command.COMMAND_UP);
-            else if( e.keyCode == Keyboard.DOWN )
-                player1.unexecute(Command.COMMAND_DOWN);
-            else if( e.keyCode == Keyboard.LEFT )
-                player1.unexecute(Command.COMMAND_LEFT);
-            else if( e.keyCode == Keyboard.RIGHT )
-                player1.unexecute(Command.COMMAND_RIGHT);
-            else if( e.keyCode == 13)
-                player1.unexecute(Command.COMMAND_ACTION)
-            else if( e.keyCode == Keyboard.NUMPAD_ADD )
-                player1.unexecute(Command.COMMAND_HIT);
-            else if( e.keyCode == Keyboard.W )
-                player2.unexecute(Command.COMMAND_UP);
-            else if( e.keyCode == Keyboard.S )
-                player2.unexecute(Command.COMMAND_DOWN);
-            else if( e.keyCode == Keyboard.A )
-                player2.unexecute(Command.COMMAND_LEFT);
-            else if( e.keyCode == Keyboard.D )
-                player2.unexecute(Command.COMMAND_RIGHT);
-            else if( e.keyCode == Keyboard.SPACE )
-                player2.unexecute(Command.COMMAND_ACTION);
-            else if( e.keyCode == Keyboard.E )
-                player2.unexecute(Command.COMMAND_HIT);
-        }
-
-        public function keydown_eventHandler(e:KeyboardEvent):void
-        {
-            if( e.keyCode == Keyboard.UP )
-                player1.execute(Command.COMMAND_UP);
-            else if( e.keyCode == Keyboard.DOWN )
-                player1.execute(Command.COMMAND_DOWN);
-            else if( e.keyCode == Keyboard.LEFT )
-                player1.execute(Command.COMMAND_LEFT);
-            else if( e.keyCode == Keyboard.RIGHT )
-                player1.execute(Command.COMMAND_RIGHT);
-            else if( e.keyCode == 13 )
-                player1.execute(Command.COMMAND_ACTION);
-            else if( e.keyCode == Keyboard.NUMPAD_ADD )
-                player1.execute(Command.COMMAND_HIT);
-            else if( e.keyCode == Keyboard.W )
-                player2.execute(Command.COMMAND_UP);
-            else if( e.keyCode == Keyboard.S )
-                player2.execute(Command.COMMAND_DOWN);
-            else if( e.keyCode == Keyboard.A )
-                player2.execute(Command.COMMAND_LEFT);
-            else if( e.keyCode == Keyboard.D )
-                player2.execute(Command.COMMAND_RIGHT);
-            else if( e.keyCode == Keyboard.SPACE )
-                player2.execute(Command.COMMAND_ACTION);
-            else if( e.keyCode == Keyboard.E )
-                player2.execute(Command.COMMAND_HIT);
-        }
+        
 
         private function playerChange_eventHandler(e:Event):void
         {
