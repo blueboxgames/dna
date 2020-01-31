@@ -19,4 +19,7 @@
             <visible>true</visible>
         </initialWindow>
     <supportedProfiles>extendedDesktop</supportedProfiles>
+    <extensions>
+        <extensionID>com.alexomara.ane.AIRControl.AIRControl</extensionID>
+    </extensions>
 </application>
