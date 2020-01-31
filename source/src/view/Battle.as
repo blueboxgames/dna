@@ -6,6 +6,7 @@ import utils.IState;
 import flash.ui.Keyboard;
 import flash.events.KeyboardEvent;
 import model.Command;
+import flash.display.Bitmap;
 
 public class Battle extends Sprite implements IState{
     public var field1:FieldView;

@@ -4,6 +4,13 @@ package model
 
     public class Tool
     {
+        public static const TYPE_SCREW:int = 0;
+        public static const TYPE_TV_1:int = 1;
+        public static const TYPE_TV_2:int = 2;
+        public static const TYPE_FAN_1:int = 3;
+        public static const TYPE_FAN_2:int = 4;
+        public static const TYPE_CAR_1:int = 5;
+
         public var id:int;
         public var repairs:int;
         public var radiusX:int = 5;
@@ -12,7 +19,7 @@ package model
         public var state:int;
         public function Tool(x:int, y:int, type:int, repairs:int)
         {
-            this.v = new ToolView();
+            this.v = new ToolView(type);
             this.x = x;
             this.y = y;
             this.repairs = repairs;

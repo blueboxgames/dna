@@ -49,9 +49,7 @@ package view
             var repairable1:Repairable = new Repairable(450, 100, Repairable.TYPE_TV, 1, Repairable.REPAIR_STATE_NONE);
             this.objects.push(repairable1);
             this.addChild(repairable1.v);
-            var tool1:Tool = new Tool(100, 450, 0, 0);
-            this.tools.push(tool1);
-            this.addChild(tool1.v);
+            
         }
 
         public function playerPickCallback(player:Player):void
@@ -60,9 +58,10 @@ package view
                 return;
         }
 
-        public function addTool(repairs:int):void
+        public function addTool(tool:Tool):void
         {
-            
+            this.tools.push(tool);
+            this.addChild(tool.v);
         }
 
         public function addRepairable(x:int, y:int):void
