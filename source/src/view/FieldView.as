@@ -29,35 +29,39 @@ public class FieldView extends Sprite {
         this.objects = [];
     }
 
-    public function initialize():void {
-        this.player1 = new Player(0);
-        this.player1.x = PLAYER1_START_X;
-        this.player1.y = PLAYER1_START_Y;
-        this.player1.fieldView = this;
-        player1.addEventListener(Event.CHANGE, playerChange_eventHandler);
-        this.player2 = new Player(1);
-        this.player2.x = PLAYER2_START_X;
-        this.player2.y = PLAYER2_START_Y;
-        this.player2.fieldView = this;
-        player2.addEventListener(Event.CHANGE, playerChange_eventHandler);
+        public function initialize():void
+        {
+            this.addEventListener(Event.ENTER_FRAME, enterFrame_eventHandler);
+            this.player1 = new Player(0);
+            this.player1.x = PLAYER1_START_X;
+            this.player1.y = PLAYER1_START_Y;
+            this.player1.fieldView = this;
+            player1.addEventListener(Event.CHANGE, playerChange_eventHandler);
+            this.player2 = new Player(1);
+            this.player2.x = PLAYER2_START_X;
+            this.player2.y = PLAYER2_START_Y;
+            this.player2.fieldView = this;
+            player2.addEventListener(Event.CHANGE, playerChange_eventHandler);
 
-        this.addChild(this.player1.v);
-        this.addChild(this.player2.v);
+            this.addChild(this.player1.v);
+            this.addChild(this.player2.v);
 
-        var repairable1:Repairable = new Repairable(450, 100, Repairable.TYPE_TV, 1, Repairable.REPAIR_STATE_NONE);
-        this.objects.push(repairable1);
-        this.addChild(repairable1.v);
-        var tool1:Tool = new Tool(100, 450, 0, 0);
-        this.tools.push(tool1);
-        this.addChild(tool1.v);
-    }
+            var repairable1:Repairable = new Repairable(450, 100, Repairable.TYPE_TV, 1, Repairable.REPAIR_STATE_NONE);
+            this.objects.push(repairable1);
+            this.addChild(repairable1.v);
+            
+        }
 
     public function playerPickCallback(player:Player):void {
         if (player.currentItem != null)
             return;
     }
 
-    public function addTool(repairs:int):void {
+        public function addTool(tool:Tool):void
+        {
+            this.tools.push(tool);
+            this.addChild(tool.v);
+        }
 
     }
 

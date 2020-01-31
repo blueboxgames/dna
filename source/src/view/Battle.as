@@ -8,6 +8,7 @@ import flash.events.KeyboardEvent;
 import flash.ui.Keyboard;
 
 import model.Command;
+import flash.display.Bitmap;
 
 import utils.IState;
 import utils.MyEvent;
