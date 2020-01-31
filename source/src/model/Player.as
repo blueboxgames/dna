@@ -63,8 +63,8 @@ public class Player extends EventDispatcher {
 
     public var radiusX:int = 10;
     public var radiusY:int = 10;
-    public var maxPickRadius:Number = 20;
-    public var maxHitRadius:Number = 50;
+    public var maxPickRadius:Number = 140;
+    public var maxHitRadius:Number = 100;
     public var v:PlayerView;
     public var fieldView:FieldView;
 

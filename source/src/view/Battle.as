@@ -30,10 +30,14 @@ public class Battle extends Sprite implements IState {
         this.stage.addEventListener(KeyboardEvent.KEY_UP, keyup_eventHandler);
         this.stage.addEventListener(KeyboardEvent.KEY_DOWN, keydown_eventHandler);
 
+        var misc:MiscView = new MiscView();
+        var misc2:MiscView = new MiscView();
+
         this.field1 = new FieldView(1);
         this.field1.x = 0;
         this.field1.addRepairable(50, 50);
         this.addChild(field1);
+        this.field1.addChild(misc);
         this.field1.initialize();
         this.field1.addEventListener(MyEvent.GAME_OVER, onGameOver);
 
@@ -48,6 +52,7 @@ public class Battle extends Sprite implements IState {
         this.field2.addRepairable(50, 50);
         this.field2.x = stage.stageWidth / 2;
         this.addChild(field2);
+        this.field2.addChild(misc2);
         this.field2.initialize();
 
         var mask2:Shape = new Shape();

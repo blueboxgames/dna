@@ -52,12 +52,18 @@ public class FieldView extends Sprite {
         this.addChild(this.player1.v);
         this.addChild(this.player2.v);
 
-        var repairable1:Repairable = new Repairable(450, 100, Repairable.TYPE_CAR, 0, Repairable.REPAIR_STATE_TWO);
+        var repairable1:Repairable = new Repairable(450, 500, Repairable.TYPE_CAR, 0, Repairable.REPAIR_STATE_TWO);
+        var repairable2:Repairable = new Repairable(1200, 700, Repairable.TYPE_FAN, 0, Repairable.REPAIR_STATE_TWO);
+        var repairable3:Repairable = new Repairable(1700, 200, Repairable.TYPE_TV,  0, Repairable.REPAIR_STATE_TWO);
         this.objects.push(repairable1);
         this.addChild(repairable1.v);
 
-        this.addTool(new Tool(100, 100, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
-        this.addTool(new Tool(100, 200, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
+        this.addTool(new Tool(120, 550, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
+        this.addTool(new Tool(800, 300, Tool.TYPE_CAR_1, Repairable.TYPE_CAR));
+        this.addTool(new Tool(346, 1700, Tool.TYPE_FAN_1, Repairable.TYPE_FAN));
+        this.addTool(new Tool(989, 346, Tool.TYPE_FAN_2, Repairable.TYPE_FAN));
+        this.addTool(new Tool(232, 555, Tool.TYPE_TV_1, Repairable.TYPE_TV));
+        this.addTool(new Tool(423, 1203, Tool.TYPE_TV_2, Repairable.TYPE_TV));
     }
 
     private function playerChangeHealth(event:MyEvent):void {
@@ -91,7 +97,7 @@ public class FieldView extends Sprite {
 
     private function playerChange_eventHandler(e:Event):void {
         var p:Player = e.currentTarget as Player;
-        if( p.score == 1 )
+        if( p.score == 2 )
         {
             winner = p.id;
             this.dispatchEvent(new MyEvent(MyEvent.GAME_OVER, false));
