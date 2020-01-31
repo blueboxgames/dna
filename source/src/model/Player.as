@@ -15,6 +15,8 @@ package model
             this.id = id;
         }
 
+        
+
         private var id:int = 0;
 
         private var _x:int = 0;
@@ -53,8 +55,13 @@ package model
         public function set health(value:int):void
         {
             _health = value;
+            trace("HEL" + _health);
             if( this.health <= 0 )
                 this.die();
+            if( this.health < 0 )
+            {
+                this.endDie()
+            }
         }
 
         public var radiusX:int = 10;
@@ -145,6 +152,8 @@ package model
          */
         public function execute(action:int):int {
             var status:int = 0;
+            if( this.disable )
+                return -1;
             if( (this.currentCommand & action) != action )
                 this.currentCommand |= action;
             return status;
@@ -176,25 +185,48 @@ package model
             if( this.id == 0 )
             {
                 if( CoreUtils.getDistance(this.x, this.fieldView.player2.x, this.y, this.fieldView.player2.y) < this.maxHitRadius)
+                {
+                    this.fieldView.player1.addEventListener(Character.EVENT_END_HIT, endHit1_eventHandler);
+                    this.fieldView.player2.currentAnimation = Character.STATE_NAME_GET_HIT;
                     this.fieldView.player2.health -= this.damage;
+                }
                 return;
             }
             else
             {
                 if( CoreUtils.getDistance(this.x, this.fieldView.player1.x, this.y, this.fieldView.player1.y) < this.maxHitRadius)
+                {
+                    this.fieldView.player2.addEventListener(Character.EVENT_END_HIT, endHit2_eventHandler);
+                    this.fieldView.player1.currentAnimation = Character.STATE_NAME_GET_HIT;
                     this.fieldView.player1.health -= this.damage;
+                }
                 return;
             }
         }
 
-        private function die():void {
-            this.v.character.addEventListener(Character.EVENT_END_DIE, endDie);
-            this.currentAnimation = Character.STATE_NAME_DIE;
-            this.currentCommand = 0;
-            this.disable = true;
+        private function endHit1_eventHandler(event:Event):void
+        {
+            this.fieldView.player1.removeEventListener(Character.EVENT_END_HIT, endHit1_eventHandler);
+            trace(this.fieldView.player2.currentState);
+            if(this.fieldView.player2.health > 0 )
+                this.fieldView.player2.currentAnimation(this.fieldView.player2.currentState);
         }
 
-        private function endDie(e:Event):void {
+        private function endHit2_eventHandler(event:Event):void
+        {
+            this.fieldView.player2.removeEventListener(Character.EVENT_END_HIT, endHit2_eventHandler);
+            trace(this.fieldView.player1.currentState)
+            if(this.fieldView.player1.health > 0 )
+                this.fieldView.player1.currentAnimation(this.fieldView.player2.currentState);
+        }
+
+        private function die():void {
+            this.disable = true;
+            this.v.character.addEventListener(Character.EVENT_END_DIE, endDie);
+            this.currentAnimation = Character.STATE_NAME_DIE;
+        }
+
+        private function endDie(e:Event=null):void {
             this.health = START_HEALTH;
             this.currentCommand = 0;
             this.currentState = Character.STATE_NAME_IDLE;

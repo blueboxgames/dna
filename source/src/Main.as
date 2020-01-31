@@ -11,11 +11,7 @@ import utils.MyEvent;
 
 import view.Menu;
 
-<<<<<<< HEAD
-[SWF(width=720, height=720, backgroundColor="#111111")]
-=======
 [SWF(width=800, height=480)]
->>>>>>> 2c3a03ceea80d005f428b2b8811eaf21e11b9d42
 
 public class Main extends Sprite {
     private var _currentState:IState;
