@@ -33,7 +33,7 @@ public class InputController extends EventDispatcher {
                 e.controller.addEventListener(AIRControlControllerEvent.POV_CHANGE, controllerEvent);
                 //Log the attach and a few key variables.
                 output = "AIRControlEvent.CONTROLLER_ATTACH, controllerIndex=" + e.controllerIndex + ", controller.ID=" + e.controller.ID + ", controller.name=\"" + e.controller.name + "\"";
-                trace(output);
+                //trace(output);
                 break;
             case AIRControlEvent.CONTROLLER_DETACH:
                 //Remove the event listeners.
@@ -42,7 +42,7 @@ public class InputController extends EventDispatcher {
                 e.controller.removeEventListener(AIRControlControllerEvent.POV_CHANGE, controllerEvent);
                 //Log the detach and a few key variables.
                 output = "AIRControlEvent.CONTROLLER_DETACH, controllerIndex=" + e.controllerIndex + ", controller.ID=" + e.controller.ID + ", controller.name=\"" + e.controller.name + "\"";
-                trace(output);
+                //trace(output);
                 break;
         }
     }
@@ -68,7 +68,7 @@ public class InputController extends EventDispatcher {
                         dispatchEvent(new MyEvent(MyEvent.INPUT_END, false, {action: MOVE_RIGHT, id: e.controller.ID}));
                         dispatchEvent(new MyEvent(MyEvent.INPUT_END, false, {action: MOVE_LEFT, id: e.controller.ID}));
                     }
-                } else if (e.elementIndex == 0) {
+                } else if (e.elementIndex == 1) {
                     if (e.element["position"] > 0.01) {
                         dispatchEvent(new MyEvent(MyEvent.INPUT_START, false, {
                             action: MOVE_DOWN,
@@ -81,29 +81,29 @@ public class InputController extends EventDispatcher {
                         dispatchEvent(new MyEvent(MyEvent.INPUT_END, false, {action: MOVE_UP, id: e.controller.ID}));
                     }
                 }
-                trace(output);
+                //trace(output);
                 break;
             case AIRControlControllerEvent.POV_CHANGE:
                 output = "AIRControlControllerEvent.POV_CHANGE, controller.ID=" + e.controller.ID + ", controller.name=\"" + e.controller.name + "\", elementIndex=" + e.elementIndex + "\", element.X=" + e.element["X"] + ", element.Y=" + e.element["Y"];
-                trace(output);
+                //trace(output);
                 break;
             case AIRControlControllerEvent.BUTTON_CHANGE:
                 output = "AIRControlControllerEvent.BUTTON_CHANGE, controller.ID=" + e.controller.ID + ", controller.name=\"" + e.controller.name + "\", elementIndex=" + e.elementIndex + "\", element.down=" + e.element["down"];
                 if (e.element["down"]) {
-                    if (e.elementIndex == 2)
-                        dispatchEvent(new MyEvent(MyEvent.INPUT_START, false, {action: HIT, id: e.controller.ID}));
                     if (e.elementIndex == 3)
+                        dispatchEvent(new MyEvent(MyEvent.INPUT_START, false, {action: HIT, id: e.controller.ID}));
+                    if (e.elementIndex == 2)
                         dispatchEvent(new MyEvent(MyEvent.INPUT_START, false, {
                             action: PICK_DROP,
                             id: e.controller.ID
                         }));
                 } else {
-                    if (e.elementIndex == 2)
-                        dispatchEvent(new MyEvent(MyEvent.INPUT_END, false, {action: HIT, id: e.controller.ID}));
                     if (e.elementIndex == 3)
+                        dispatchEvent(new MyEvent(MyEvent.INPUT_END, false, {action: HIT, id: e.controller.ID}));
+                    if (e.elementIndex == 2)
                         dispatchEvent(new MyEvent(MyEvent.INPUT_END, false, {action: PICK_DROP, id: e.controller.ID}));
                 }
-                trace(output);
+                //trace(output);
                 break;
         }
     }
