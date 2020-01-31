@@ -17,7 +17,7 @@ package model
 
         
 
-        private var id:int = 0;
+        public var id:int = 0;
 
         private var _x:int = 0;
         
@@ -148,7 +148,6 @@ package model
         public function set score(value:int):void
         {
             _score = value;
-            trace("SCORE = " + value);
             this.dispatchEvent(new Event(Event.CHANGE));
         }
         /**

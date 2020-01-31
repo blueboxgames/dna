@@ -10,6 +10,7 @@ import model.Tool;
 
 import utils.CoreUtils;
 import control.HeartGroup;
+import utils.MyEvent;
 
 public class FieldView extends Sprite {
     public static const PLAYER1_START_X:int = 0;
@@ -96,6 +97,10 @@ public class FieldView extends Sprite {
 
     private function playerChange_eventHandler(e:Event):void {
         var p:Player = e.currentTarget as Player;
+        trace("c");
+        trace(p.score);
+        if( p.score == 1 )
+            this.dispatchEvent(new MyEvent(MyEvent.GAME_OVER, false, {winner: p.id}));
     }
 
     private function step():void {
@@ -223,6 +228,8 @@ public class FieldView extends Sprite {
             }
         }
 
+        if( stage == null )
+            return;
         if(_id == 1) {
             this.x = (stage.stageWidth * 1 / 4) - player1.x;
             this.y = (stage.stageHeight / 2) - player1.y;
