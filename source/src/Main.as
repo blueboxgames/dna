@@ -5,6 +5,7 @@ import control.InputController;
 
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.media.Sound;
 
 import utils.IState;
 import utils.MyEvent;
@@ -23,6 +24,10 @@ public class Main extends Sprite {
             advancedAntiAliasing="true",
             embedAsCFF="false")]
     private var _arialRoundedFont:Class;
+
+    [Embed(source="../assets/battle.mp3")]
+    public var bgSoundClass:Class;
+
     private var _inputControl:InputController;
 
     public function Main() {
@@ -31,6 +36,8 @@ public class Main extends Sprite {
 
         this.addEventListener(Event.ENTER_FRAME, enterFrame_eventHandler);
 
+        var smallSound:Sound = new bgSoundClass() as Sound;
+        smallSound.play(0, 99);
     }
 
     private function enterFrame_eventHandler(event:Event):void {
