@@ -60,12 +60,23 @@ package model
         public var radiusX:int = 10;
         public var radiusY:int = 10;
         public var maxPickRadius:Number = 20;
-        public var maxHitRadius:Number = 20;
+        public var maxHitRadius:Number = 50;
         public var v:PlayerView;
         public var fieldView:FieldView;
         
         public var damage:int = 1;
-        public var disable:Boolean = false;
+        private var _disable:Boolean;
+        
+        public function get disable():Boolean
+        {
+            return _disable;
+        }
+        
+        public function set disable(value:Boolean):void
+        {
+            /* this.currentCommand = 0; */
+            _disable = value;
+        }
 
         public var speedFactor:int = 2;
         public var currentItem:Tool = null;
@@ -76,7 +87,6 @@ package model
         
         public function get currentCommand():int
         {
-            //trace(_currentCommand);
             return _currentCommand;
         }
         
@@ -89,24 +99,32 @@ package model
             if( currentState == Character.STATE_NAME_CARRY )
             {
                 if( (_currentCommand & 0x000f) == 0x0 )
-                    this.v.character.gotoAndPlay(Character.STATE_NAME_IDLE_CARRY);
+                    this.currentAnimation  = Character.STATE_NAME_IDLE_CARRY;
                 else
-                    this.v.character.gotoAndPlay(Character.STATE_NAME_CARRY);
+                    this.currentAnimation = Character.STATE_NAME_CARRY;
                 return;
             }
-            if( currentState == Character.STATE_NAME_PUNCH )
+            
+            if( currentAnimation == Character.STATE_NAME_PUNCH )
                 return;
 
             if( ( _currentCommand == 0 ) && currentState != Character.STATE_NAME_IDLE )
             {
-                this.v.character.gotoAndPlay(Character.STATE_NAME_IDLE);
+                this.currentAnimation = Character.STATE_NAME_IDLE;
                 currentState = Character.STATE_NAME_IDLE;
             }
-            if( (_currentCommand & 0x000f) != 0x0 && currentState != Character.STATE_NAME_WALK )
+
+            if( (_currentCommand & 0x000f) != 0x0 && currentState != Character.STATE_NAME_WALK  )
             {
-                this.v.character.gotoAndPlay(Character.STATE_NAME_WALK);
+                this.currentAnimation = Character.STATE_NAME_WALK;
                 currentState = Character.STATE_NAME_WALK;
             }
+
+            if( currentState == Character.STATE_NAME_WALK )
+                this._currentAnimation = Character.STATE_NAME_WALK;
+            if( currentState == Character.STATE_NAME_IDLE )
+                this.currentAnimation = Character.STATE_NAME_IDLE;
+
         }
 
         private var _score:int;
@@ -126,8 +144,6 @@ package model
          */
         public function execute(action:int):int {
             var status:int = 0;
-            if( this.disable )
-                return -1;
             if( (this.currentCommand & action) != action )
                 this.currentCommand |= action;
             return status;
@@ -138,25 +154,24 @@ package model
          */
         public function unexecute(action:int):int {
             var status:int = 0;
-            if( this.disable )
-                return -1;
-            this.currentCommand ^= action;
+            this.currentCommand &= ~action;
             return status;
         }
 
         public function hit(player:Player):void {
             if( this.disable )
                 return;
-            this.v.character.gotoAndPlay(Character.STATE_NAME_PUNCH);
-            // this.currentState = Character.STATE_NAME_IDLE;
+            this.currentAnimation = Character.STATE_NAME_PUNCH;
             this.disable = true;
         }
 
         public function hitAttackReEnable(e:Event):void {
             this.v.character.removeEventListener(Character.EVENT_END_HIT, hitAttackReEnable);
-            this.currentCommand = 0;
             this.disable = false;
-            this.v.character.gotoAndPlay(Character.STATE_NAME_IDLE);
+            if( this.currentState == Character.STATE_NAME_WALK && (this.currentCommand & 0xf) != 0 )
+                this.currentAnimation = Character.STATE_NAME_WALK;
+            else
+                this.currentAnimation = Character.STATE_NAME_IDLE;
             if( this.id == 0 )
             {
                 if( CoreUtils.getDistance(this.x, this.fieldView.player2.x, this.y, this.fieldView.player2.y) < this.maxHitRadius)
@@ -173,7 +188,7 @@ package model
 
         private function die():void {
             this.v.character.addEventListener(Character.EVENT_END_DIE, endDie);
-            this.v.character.gotoAndPlay(Character.STATE_NAME_DIE);
+            this.currentAnimation = Character.STATE_NAME_DIE;
             this.currentCommand = 0;
             this.disable = true;
         }
@@ -183,7 +198,7 @@ package model
             this.currentCommand = 0;
             this.currentState = Character.STATE_NAME_IDLE;
             this.disable = false;
-            this.v.character.gotoAndPlay(Character.STATE_NAME_IDLE);
+            this.currentAnimation = Character.STATE_NAME_IDLE;
             if( this.id == 0 )
             {
                 this.x = FieldView.PLAYER1_START_X;
@@ -194,6 +209,21 @@ package model
                 this.x = FieldView.PLAYER2_START_X;
                 this.y = FieldView.PLAYER2_START_Y;
             }
+        }
+
+        private var _currentAnimation:String;
+        
+        public function get currentAnimation():String
+        {
+            return _currentAnimation;
+        }
+        
+        public function set currentAnimation(value:String):void
+        {
+            if(this.currentAnimation == value)
+                return;
+            _currentAnimation = value;
+            this.v.character.gotoAndPlay(_currentAnimation);
         }
     }
 }
