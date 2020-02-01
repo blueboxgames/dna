@@ -1,8 +1,12 @@
 package view {
-import control.HeartGroup;
+import com.grantech.colleagues.Colleague;
+import com.grantech.colleagues.Colleagues2d;
+import com.grantech.colleagues.Contacts;
 
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
+import flash.utils.getTimer;
 import flash.utils.setTimeout;
 
 import model.Command;
@@ -12,10 +16,8 @@ import model.Tool;
 
 import utils.CoreUtils;
 import utils.MyEvent;
-import com.grantech.colleagues.Colleagues2d;
-import flash.events.MouseEvent;
-import com.grantech.colleagues.Colleague;
-import flash.utils.getTimer;
+import com.grantech.colleagues.CMath;
+import com.grantech.colleagues.Shape;
 
 public class FieldView extends Sprite {
     public static const PLAYER1_START_X:int = 0;
@@ -35,7 +37,7 @@ public class FieldView extends Sprite {
     static public const WIDTH:int = 2000;
     static public const HEIGHT:int = 2000;
     static public const BORDER:int = 50; 
-    static public const PADDING:int = 10; 
+    static public const PADDING:int = 0; 
 
     private var dt:int;
     private var accumulator:int;
@@ -72,8 +74,8 @@ public class FieldView extends Sprite {
 
     private function stage_clickHandler(event:MouseEvent):void
     {
-        var mx:int = Math.round(event.stageX);
-        var my:int = Math.round(event.stageY);
+        var mx:int = Math.round(event.localX);
+        var my:int = Math.round(event.localY);
         var min:int = 10;
         var max:int = 30;
         addUnit(random(min, max), random(50, 150), mx, my);
@@ -104,14 +106,14 @@ public class FieldView extends Sprite {
       }
       // debugDraw();
 
-      for each(var c:Colleague in engine.colleagues)
+      /* for each(var c:Colleague in engine.colleagues)
       {
         if(c.mass == 0)
             continue;
         var u:Unit = c as Unit;
         u.skin.x = u.x;
         u.skin.y = u.y;
-      }
+      } */
     }
 
     public function initialize():void {
@@ -237,9 +239,7 @@ public class FieldView extends Sprite {
 
     public function update():void {
 
-        this.updateEngine();
         // Movement
-
         if (!player1.disable) {
             if ((player1.currentCommand & Command.COMMAND_UP) == Command.COMMAND_UP)
                 player1.y -= player1.speedFactor;
@@ -261,6 +261,9 @@ public class FieldView extends Sprite {
             if ((player2.currentCommand & Command.COMMAND_LEFT) == Command.COMMAND_LEFT)
                 player2.x -= player2.speedFactor;
         }
+
+        this.updateEngine();
+        this.draw();
 
         // Action
         if (!player1.actionDisable && !player1.disable) {
@@ -302,6 +305,52 @@ public class FieldView extends Sprite {
             this.x = (stage.stageWidth * 3 / 4) - player2.x;
             this.y = (stage.stageHeight / 2) - player2.y;
         }
+    }
+
+    private function draw():void {
+      this.graphics.clear();
+      // if (skipDrawing)
+      //   return;
+      var x:Number = 0;
+      var y:Number = 0;
+      for each (var b:Colleague in this.engine.colleagues) {
+        if (b.shape.type == Shape.TYPE_CIRCLE) {
+          this.graphics.lineStyle(1, b.speedX == 0 && b.speedY == 0 ? 0xAAAAAA : 0xFF0000);
+          this.graphics.moveTo(b.x, b.y);
+          // this.graphics.lineTo(b.position.x + b.shape.radius * Math.cos(b.orient), b.position.y + b.shape.radius * Math.sin(b.orient));
+          this.graphics.drawCircle(b.x, b.y, b.shape.radius);
+        } else {
+          this.graphics.lineStyle(1, 0x0000FF);
+          for (var i:int=0; i < b.shape.vertexCount; i++) {
+            // var v = new Vec2(b.shape.vertices[i].x, b.shape.vertices[i].y);
+            // b.shape.u.muli(v);
+            // v.addi(b.position);
+            x = CMath.matrix_transformX(b.shape.matrix, b.shape.getX(i), b.shape.getY(i)) + b.x;
+            y = CMath.matrix_transformY(b.shape.matrix, b.shape.getX(i), b.shape.getY(i)) + b.y;
+            if (i == 0)
+              this.graphics.moveTo(x, y);
+            else
+              this.graphics.lineTo(x, y);
+          }
+          x = CMath.matrix_transformX(b.shape.matrix, b.shape.getX(0), b.shape.getY(0)) + b.x;
+          y = CMath.matrix_transformY(b.shape.matrix, b.shape.getX(0), b.shape.getY(0)) + b.y;
+          this.graphics.lineTo(x, y);
+        }
+      }
+
+      this.graphics.lineStyle(1, 0xAAAAAA);
+      for each (var c:Contacts in engine.contacts) {
+      //   if (c.count > 0 && c.a.shape.type == Shape.TYPE_CIRCLE && c.b.shape.type == Shape.TYPE_CIRCLE && c.a.side != c.b.side) {
+      //     engine.colleagues.remove(c.a);
+      //     engine.colleagues.remove(c.b);
+      //     continue;
+      //   }
+        for (i=0; i < c.count; i++) {
+          this.graphics.moveTo(c.getPointX(i), c.getPointY(i));
+          this.graphics.lineTo(c.getPointX(i) + c.normalX * 4, c.getPointY(i) + c.normalY * 4);
+        }
+      }
+
     }
 }
 }

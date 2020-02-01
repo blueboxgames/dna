@@ -55,16 +55,10 @@ package com.grantech.colleagues {
 			}
 		}
 		
-		public function add(shape : com.grantech.colleagues.Shape,x : int,y : int) : com.grantech.colleagues.Colleague {
-			var c : com.grantech.colleagues.Colleague = new com.grantech.colleagues.Colleague(shape,x,y);
-			this.colleagues.push(c);
-			return c;
-		}
-		
 		public function integrateVelocity(c : com.grantech.colleagues.Colleague,deltaTime : Number) : void {
-			if(c.invMass == 0) return;
-			c.x += c.speedX * deltaTime;
-			c.y += c.speedY * deltaTime;
+			// if(c.invMass == 0) return;
+			// c.x += c.speedX * deltaTime;
+			// c.y += c.speedY * deltaTime;
 		}
 		
 		protected var pool : Array = new Array();

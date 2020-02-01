@@ -7,38 +7,28 @@ import utils.MyEvent;
 
 import view.FieldView;
 import view.PlayerView;
+import com.grantech.colleagues.Colleague;
+import com.grantech.colleagues.Shape;
 
-public class Player extends EventDispatcher {
+public class Player extends Colleague {
     public static const START_HEALTH:int = 3;
 
     public function Player(id:int) {
         this.v = new PlayerView(id);
         this.id = id;
+        super(Shape.create_circle(radiusX), x, y);
     }
 
 
     private var id:int = 0;
 
-    private var _x:int = 0;
-
-    public function get x():int {
-        return _x;
+    override public function set x(value:Number):void {
+        super.x = value;
+        this.v.x = value;
     }
-
-    public function set x(value:int):void {
-        _x = value;
-        this.v.x = _x;
-    }
-
-    private var _y:int = 0;
-
-    public function get y():int {
-        return _y;
-    }
-
-    public function set y(value:int):void {
-        _y = value;
-        this.v.y = _y;
+    override public function set y(value:Number):void {
+        super.y = value;
+        this.v.y = value;
     }
 
     private var _health:int = START_HEALTH;

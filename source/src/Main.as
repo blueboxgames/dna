@@ -12,11 +12,10 @@ import utils.MyEvent;
 
 import view.Menu;
 import view.PlayerView;
-import view.Scene;
 
+[SWF(width=800, height=480)]
 public class Main extends Sprite
 {
-    public var scene:Scene;
     public var player1:PlayerView;
     public var player2:PlayerView;
     private var _currentState:IState;
@@ -29,11 +28,6 @@ public class Main extends Sprite
     {
         this.stage.align = StageAlign.TOP_LEFT;
         this.stage.scaleMode = StageScaleMode.NO_SCALE;
-        this.loaderInfo.addEventListener(Event.COMPLETE, this.loaderInfo_completeHandler);
-    }
-    protected function loaderInfo_completeHandler(e:Event):void
-    {
-        this.loaderInfo.removeEventListener(Event.COMPLETE, this.loaderInfo_completeHandler);
         
         this.changeStateTo(Menu);
         this._inputControl = new InputController();
