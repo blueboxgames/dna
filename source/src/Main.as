@@ -10,42 +10,37 @@ import flash.events.Event;
 import utils.IState;
 import utils.MyEvent;
 
+import view.Menu;
 import view.PlayerView;
 import view.Scene;
-import view.Menu;
 
 public class Main extends Sprite
 {
     public var scene:Scene;
     public var player1:PlayerView;
     public var player2:PlayerView;
+    private var _currentState:IState;
+
+    [Embed(source="font/ARLRDBD.TTF", fontName="Arial Rounded MT Bold", mimeType="application/x-font", advancedAntiAliasing="true", embedAsCFF="false")]
+    private var _arialRoundedFont:Class;
+    private var _inputControl:InputController;
 
     public function Main()
     {
-        this.stage.scaleMode = StageScaleMode.NO_SCALE;
         this.stage.align = StageAlign.TOP_LEFT;
+        this.stage.scaleMode = StageScaleMode.NO_SCALE;
         this.loaderInfo.addEventListener(Event.COMPLETE, this.loaderInfo_completeHandler);
     }
     protected function loaderInfo_completeHandler(e:Event):void
     {
+        this.loaderInfo.removeEventListener(Event.COMPLETE, this.loaderInfo_completeHandler);
         this.scene = new Scene();
-        this.addChild(scene);
+        this.addChild(this.scene);
 
-    this.changeStateTo(Menu);
-    this._inputControl = new InputController();
-    this.addEventListener(Event.ENTER_FRAME, enterFrame_eventHandler);
+        this.changeStateTo(Menu);
+        this._inputControl = new InputController();
+        this.addEventListener(Event.ENTER_FRAME, this.enterFrame_eventHandler);
     }
-
-    
-    private var _currentState:IState;
-
-    [Embed(source="font/ARLRDBD.TTF",
-            fontName="Arial Rounded MT Bold",
-            mimeType="application/x-font",
-            advancedAntiAliasing="true",
-            embedAsCFF="false")]
-    private var _arialRoundedFont:Class;
-    private var _inputControl:InputController;
 
     private function enterFrame_eventHandler(event:Event):void {
         // AIRControl.update();

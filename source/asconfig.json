@@ -3,6 +3,7 @@
     "config": "air",
     "compilerOptions": {
         "library-path": ["libs"],
+        "external-library-path": ["libs"],
         "optimize": false,
         "default-frame-rate": 60,
         "default-background-color": "0",

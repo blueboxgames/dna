@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <application xmlns="http://ns.adobe.com/air/application/32.0">
-        <id>com.tggjam.dna</id>
-	    <name>DNA</name>
-	    <filename>DNA</filename>
-	    <versionNumber>0.0.1</versionNumber>
-	    <versionLabel>0.0.1</versionLabel>
-        <description></description>
-        <initialWindow>
-		    <fullScreen>true</fullScreen>
-            <content>bin/dna.swf</content>
-            <renderMode>direct</renderMode>
-            <autoOrients>false</autoOrients>
-            <aspectRatio>landscape</aspectRatio>
-            <depthAndStencil>true</depthAndStencil>
-            <systemChrome>standard</systemChrome>
-            <visible>true</visible>
-        </initialWindow>
-        
+<application xmlns="http://ns.adobe.com/air/application/32.0">
+    <id>com.tggjam.dna</id>
+    <name>DNA</name>
+    <filename>DNA</filename>
+    <versionNumber>0.0.1</versionNumber>
+    <versionLabel>0.0.1</versionLabel>
+    <description></description>
+    <initialWindow>
+        <fullScreen>true</fullScreen>
+        <content>bin/dna.swf</content>
+        <renderMode>direct</renderMode>
+        <autoOrients>false</autoOrients>
+        <aspectRatio>landscape</aspectRatio>
+        <depthAndStencil>true</depthAndStencil>
+        <systemChrome>standard</systemChrome>
+        <visible>true</visible>
+    </initialWindow>
+    <supportedProfiles>extendedDesktop</supportedProfiles>
+    <extensions>
+        <extensionID>com.alexomara.ane.AIRControl.AIRControl</extensionID>
     </extensions>
+</application>
