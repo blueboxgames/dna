@@ -22,7 +22,7 @@ public class Menu extends Sprite implements IState{
         stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 
         var playBtn:ButtonRed = new ButtonRed();
-        playBtn.text_field.text = "Play";
+        // playBtn.text_field.text = "Play";
         playBtn.x = (stage.stageWidth - playBtn.width) / 2;
         playBtn.y = (stage.stageHeight - playBtn.height) / 2;
         addChild(playBtn);

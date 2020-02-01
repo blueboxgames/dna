@@ -18,7 +18,7 @@ public class GameOver extends Sprite implements IState {
         this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 
         var playBtn:ButtonRed = new ButtonRed();
-        playBtn.text_field.text = "Game Over";
+        // playBtn.text_field.text = "Game Over";
         playBtn.x = (stage.stageWidth - playBtn.width) / 2;
         playBtn.y = (stage.stageHeight - playBtn.height) / 2;
         addChild(playBtn);
