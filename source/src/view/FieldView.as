@@ -66,21 +66,19 @@ public class FieldView extends Sprite {
       for(var i:int = 0; i < len; i++)
         this.engine.colleagues.push(new Unit(Math.random()*(WIDTH - 100), Math.random()*(HEIGHT - 100), Math.random() * 8, this)); */
 
-      this.addEventListener(Event.ENTER_FRAME, this.enterFrameHandler);
       this.stage.addEventListener(MouseEvent.CLICK, this.stage_clickHandler);
     }
 
     private function stage_clickHandler(event:MouseEvent):void
     {
-      var mx:int = Math.round(event.stageX);
-      var my:int = Math.round(event.stageY);
-      var min:int = 10;
-      var max:int = 30;
-      addUnit(random(min, max), random(50, 150), mx, my);
-    }
-
-    private function random(min:Number, max:Number):Number {
-      return min + Math.random() * (max - min);
+        var mx:int = Math.round(event.stageX);
+        var my:int = Math.round(event.stageY);
+        var min:int = 10;
+        var max:int = 30;
+        addUnit(random(min, max), random(50, 150), mx, my);
+        function random(min:Number, max:Number):Number {
+            return min + Math.random() * (max - min);
+        }
     }
 
     protected function addUnit(size:Number, speed:Number, x:int, y:int):void
@@ -93,7 +91,7 @@ public class FieldView extends Sprite {
       // u.side = b.y > stage.stageHeight * 0.5 ? 0 : 1;
     }
   
-    protected function enterFrameHandler(event:Event):void
+    private function updateEngine():void
     {
       var t:int = getTimer();
       this.accumulator += (t - this.dt);
@@ -251,6 +249,8 @@ public class FieldView extends Sprite {
     }
 
     public function update():void {
+
+        this.updateEngine();
         // Movement
 
         if( !player1.disable )
