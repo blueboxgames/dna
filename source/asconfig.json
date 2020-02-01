@@ -2,8 +2,8 @@
     "type": "app",
     "config": "air",
     "compilerOptions": {
-        "library-path": ["libs"],
-        "external-library-path": ["libs"],
+        "library-path": ["lib"],
+        "external-library-path": ["lib"],
         "optimize": false,
         "default-frame-rate": 60,
         "default-background-color": "0",
