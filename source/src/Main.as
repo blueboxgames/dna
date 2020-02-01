@@ -34,9 +34,7 @@ public class Main extends Sprite
     protected function loaderInfo_completeHandler(e:Event):void
     {
         this.loaderInfo.removeEventListener(Event.COMPLETE, this.loaderInfo_completeHandler);
-        this.scene = new Scene();
-        this.addChild(this.scene);
-
+        
         this.changeStateTo(Menu);
         this._inputControl = new InputController();
         this.addEventListener(Event.ENTER_FRAME, this.enterFrame_eventHandler);

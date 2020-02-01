@@ -11,6 +11,10 @@ import model.Tool;
 import utils.CoreUtils;
 import control.HeartGroup;
 import utils.MyEvent;
+import com.grantech.colleagues.Colleagues2d;
+import flash.events.MouseEvent;
+import com.grantech.colleagues.Colleague;
+import flash.utils.getTimer;
 
 public class FieldView extends Sprite {
     public static const PLAYER1_START_X:int = 0;
@@ -25,10 +29,90 @@ public class FieldView extends Sprite {
 
     private var _id:int;
 
+
+
+    static public const WIDTH:int = 2000;
+    static public const HEIGHT:int = 2000;
+    static public const BORDER:int = 50; 
+    static public const PADDING:int = 10; 
+
+    private var dt:int;
+    private var accumulator:int;
+    private var engine:Colleagues2d;
+   
     public function FieldView(id:int) {
         _id = id;
         this.tools = [];
         this.objects = [];
+        this.addEventListener(Event.ADDED_TO_STAGE, this.addedToStageHandler);
+    }
+
+    protected function addedToStageHandler(event:Event):void
+    {
+      this.removeEventListener(Event.ADDED_TO_STAGE, this.addedToStageHandler);
+
+      this.engine = new Colleagues2d(1000/stage.frameRate);
+
+      var leftWall:Wall  = new Wall(-BORDER * 0.5 + PADDING, HEIGHT * 0.5, BORDER, HEIGHT + BORDER * 2, this);
+      this.engine.colleagues.push(leftWall);
+      var rightWall:Wall = new Wall(WIDTH + BORDER * 0.5 - PADDING, HEIGHT * 0.5, BORDER, HEIGHT + BORDER * 2, this);
+      this.engine.colleagues.push(rightWall);
+      var topWall:Wall   = new Wall(WIDTH * 0.5, -BORDER * 0.5 + PADDING, WIDTH + BORDER * 2, BORDER, this);
+      this.engine.colleagues.push(topWall);
+      var bottomWall:Wall= new Wall(WIDTH * 0.5, HEIGHT + BORDER * 0.5 - PADDING, WIDTH + BORDER * 2, BORDER, this);
+      this.engine.colleagues.push(bottomWall);
+
+      /* var len:int = 4;
+      for(var i:int = 0; i < len; i++)
+        this.engine.colleagues.push(new Unit(Math.random()*(WIDTH - 100), Math.random()*(HEIGHT - 100), Math.random() * 8, this)); */
+
+      this.addEventListener(Event.ENTER_FRAME, this.enterFrameHandler);
+      this.stage.addEventListener(MouseEvent.CLICK, this.stage_clickHandler);
+    }
+
+    private function stage_clickHandler(event:MouseEvent):void
+    {
+      var mx:int = Math.round(event.stageX);
+      var my:int = Math.round(event.stageY);
+      var min:int = 10;
+      var max:int = 30;
+      addUnit(random(min, max), random(50, 150), mx, my);
+    }
+
+    private function random(min:Number, max:Number):Number {
+      return min + Math.random() * (max - min);
+    }
+
+    protected function addUnit(size:Number, speed:Number, x:int, y:int):void
+    {
+      var u:Unit = new Unit(x, y, size, this);
+      u.speedX = Math.random() * 0.1 * (Math.random()>0.5?1:-1);
+      u.speedY = Math.random() * 0.1 * (Math.random()>0.5?1:-1);
+      // trace(u.speedX, u.speedY)
+      this.engine.colleagues.push(u);
+      // u.side = b.y > stage.stageHeight * 0.5 ? 0 : 1;
+    }
+  
+    protected function enterFrameHandler(event:Event):void
+    {
+      var t:int = getTimer();
+      this.accumulator += (t - this.dt);
+      this.dt = t;
+      if (this.accumulator >= this.engine.deltaTime)
+      {
+        this.accumulator -= this.engine.deltaTime;
+        this.engine.step();
+      }
+      // debugDraw();
+
+      for each(var c:Colleague in engine.colleagues)
+      {
+        if(c.mass == 0)
+            continue;
+        var u:Unit = c as Unit;
+        u.skin.x = u.x;
+        u.skin.y = u.y;
+      }
     }
 
     public var healthGroup:HeartGroup;
@@ -74,11 +158,11 @@ public class FieldView extends Sprite {
             return;
     }
 
-        public function addTool(tool:Tool):void
-        {
-            this.tools.push(tool);
-            this.addChild(tool.v);
-        }
+    public function addTool(tool:Tool):void
+    {
+        this.tools.push(tool);
+        this.addChild(tool.v);
+    }
 
     public function addRepairable(x:int, y:int):void {
         /* var repairable:Repairable = new Repairable();

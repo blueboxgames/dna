@@ -13,9 +13,9 @@ package view
 
   public class Scene extends Sprite
   {
-    static public const WIDTH:int = 300;
-    static public const HEIGHT:int = 200;
-    static public const BORDER:int = 20; 
+    static public const WIDTH:int = 2000;
+    static public const HEIGHT:int = 2000;
+    static public const BORDER:int = 50; 
     static public const PADDING:int = 10; 
     static public const CAMERA_WIDTH:int = 400; 
     static public const CAMERA_HEIGHT:int = 600;
