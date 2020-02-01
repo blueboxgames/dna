@@ -4,13 +4,13 @@ import com.alexomara.ane.AIRControl.AIRControl;
 import control.InputController;
 
 import flash.display.Sprite;
+import flash.display.StageDisplayState;
 import flash.events.Event;
 
 import utils.IState;
 import utils.MyEvent;
 
 import view.Menu;
-import view.SplashScreen;
 
 [SWF(width=800, height=480)]
 
@@ -29,8 +29,8 @@ public class Main extends Sprite {
         _inputControl = new InputController();
         changeStateTo(Menu);
 
+        stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
         this.addEventListener(Event.ENTER_FRAME, enterFrame_eventHandler);
-
     }
 
     private function enterFrame_eventHandler(event:Event):void {
